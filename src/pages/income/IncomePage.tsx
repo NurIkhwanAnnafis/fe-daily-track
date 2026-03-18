@@ -1,10 +1,10 @@
 import DataTable from "../../components/DataTable/DataTable"
 import { Filter } from "../../components/Filter/Filter"
 import PageContainer from "../../components/PageContainer/PageContainer"
-import type { ExpenseFilter } from "./expense.type"
-import { useExpensePage } from "./hooks/useExpensePage"
+import type { IncomeFilter } from "./income.type"
+import { useIncomePage } from "./hooks/useIncomePage"
 
-const ExpensePage = () => {
+const Income = () => {
   const {
     datasource,
     column,
@@ -14,15 +14,15 @@ const ExpensePage = () => {
     renderSchema,
     renderActiveFilter,
     onChangePagination,
-  } = useExpensePage()
+  } = useIncomePage()
 
   return (
     <PageContainer
-      title="Expense"
-      description="Track and manage your expense transactions"
+      title="Income"
+      description="Track and manage your income transactions"
       onCreate={() => { }}
     >
-      <Filter.Root<ExpenseFilter> onSubmit={onSubmit} form={form}>
+      <Filter.Root<IncomeFilter> onSubmit={onSubmit} form={form}>
         <Filter.Container className="">
           <div className="grid grid-cols-4 gap-4">
             {renderSchema()}
@@ -52,4 +52,4 @@ const ExpensePage = () => {
   )
 }
 
-export default ExpensePage
+export default Income

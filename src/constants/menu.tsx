@@ -12,31 +12,36 @@ export const createMenu = (navigate: UseNavigateResult<string>): MenuProps['item
   {
     key: '/dashboard',
     icon: createElement(DashboardOutlined),
-    label: 'Dashboard Management',
+    title: 'Dashboard Management',
     onClick: () => navigate({ to: '/dashboard' }),
+    label: 'Dashboard'
   },
   {
     key: '/report',
     icon: createElement(FallOutlined),
-    label: 'Report Management',
-    onClick: () => navigate({ to: '/report' })
+    title: 'Report Management',
+    onClick: () => navigate({ to: '/report' }),
+    label: 'Report'
   },
   {
     key: '/expense',
     icon: createElement(FallOutlined),
-    label: 'Expense Management',
-    onClick: () => navigate({ to: '/expense' })
+    title: 'Expense Management',
+    onClick: () => navigate({ to: '/expense' }),
+    label: 'Expense'
   },
   {
     key: '/income',
     icon: createElement(RiseOutlined),
-    label: 'Income Management',
-    onClick: () => navigate({ to: '/income' })
+    title: 'Income Management',
+    onClick: () => navigate({ to: '/income' }),
+    label: 'Income'
   },
   {
     key: '/category',
     icon: createElement(GroupOutlined),
-    label: 'Category Management',
-    onClick: () => navigate({ to: '/category' })
+    title: 'Category Management',
+    onClick: () => navigate({ to: '/category' }),
+    label: 'Category'
   },
 ]

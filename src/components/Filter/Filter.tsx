@@ -36,7 +36,7 @@ const FilterReset: React.FC<{ onReset: () => void }> = ({ onReset }) => {
     <Button
       htmlType="button"
       onClick={onReset}
-      type="text"
+      type="dashed"
       icon={<ReloadOutlined />}
     >
       Reset

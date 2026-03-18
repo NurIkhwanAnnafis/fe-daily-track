@@ -17,6 +17,7 @@
     "@tanstack/react-router": "^1.157.16",
     "@tanstack/react-router-devtools": "^1.159.5",
     "cors": "^2.8.6",
+    "dayjs": "^1.11.20",
     "dotenv": "^17.2.4",
     "effect": "^3.19.16",
     "express": "^5.2.1",

@@ -107,7 +107,7 @@ const executeJson = <T>(
 
 type HttpOptions = {
   headers?: Record<string, string>
-  params?: Record<string, string>
+  params?: Record<string, string | number>
   baseUrl?: string
   cleanBody?: boolean
   cleanParams?: boolean
@@ -127,7 +127,7 @@ const httpServices = <T>(
   if (options?.params) {
     const params = options.cleanParams ? cleanObject(options.params) : options.params
 
-    url += '?' + new URLSearchParams(params).toString()
+    url += '?' + new URLSearchParams(params as Record<string, string>).toString()
   }
 
   let currentBody = body

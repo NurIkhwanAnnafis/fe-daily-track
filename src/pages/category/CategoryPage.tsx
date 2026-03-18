@@ -1,4 +1,6 @@
-import { Card } from "antd"
+import dayjs from "dayjs"
+import { Card, Dropdown } from "antd"
+import { FileImageOutlined, MoreOutlined } from "@ant-design/icons"
 import DataGrid from "../../components/DataTable/DataGrid"
 import { Filter } from "../../components/Filter/Filter"
 import PageContainer from "../../components/PageContainer/PageContainer"
@@ -22,6 +24,25 @@ const CategoryPage = () => {
     fetchCategory,
   } = useCategoryPage()
 
+  const items = [
+  {
+    key: '1',
+    label: (
+      <a onClick={(e) => e.preventDefault()}>
+        Edit
+      </a>
+    ),
+  },
+  {
+    key: '2',
+    label: (
+      <a onClick={(e) => e.preventDefault()} className="text-red-500!">
+        Delete
+      </a>
+    ),
+  },
+]
+
   return (
     <PageContainer
       title="Category"
@@ -40,9 +61,12 @@ const CategoryPage = () => {
           <div className="flex gap-2 w-full">
             {renderSchema()}
           </div>
-          <div className="flex justify-end gap-2 items-end h-max">
-            <Filter.Reset onReset={onReset} />
-            <Filter.Submit />
+          <div className="flex justify-end gap-2 items-end h-full">
+            <div className="flex gap-4">
+              <Filter.Reset onReset={onReset} />
+              <span className="h-auto w-px bg-neutral-300" />
+              <Filter.Submit />
+            </div>
           </div>
         </Filter.Container>
         {renderActiveFilter()}
@@ -51,11 +75,30 @@ const CategoryPage = () => {
       <DataGrid<Category>
         component={(item) => (
           <Card
-            className="w-full flex items-center justify-center border-2! h-50"
+            className="w-full border-2! h-50"
+            classNames={{
+              body: 'flex justify-between flex-col h-full'
+            }}
           >
-            <div className="flex flex-col gap-2 items-center justify-center ">
-              <p className="font-semibold text-neutral-400">
+            <div className="flex justify-between">
+              {item.logo ? (
+                <img src={item.logo} alt={item.name} className="w-15 h-15" />
+              ) : <FileImageOutlined className="text-5xl!" style={{ color: item.color ?? '#9ca3af' }} />}
+              <Dropdown menu={{ items }} trigger={['click']}>
+                <MoreOutlined className="text-2xl! cursor-pointer" />
+              </Dropdown>
+            </div>
+            <div>
+              <p className="font-semibold text-neutral-950 mb-0!">
                 {item.name}
+              </p>
+              <p className="font-semibold text-neutral-800 mb-0!">
+                {item.description ?? '-'}
+              </p>
+            </div>
+            <div>
+              <p className="font-semibold text-neutral-400">
+                {dayjs(item.created_at).format('DD MMM YYYY')}
               </p>
             </div>
           </Card>

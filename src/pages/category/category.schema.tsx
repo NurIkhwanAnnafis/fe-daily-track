@@ -8,9 +8,9 @@ type SchemaFilterProps = {
 export const schemaFilter = (props: SchemaFilterProps): FilterSchema[] => [
   {
     type: 'text',
-    id: 'name',
+    id: 'search',
     label: 'Category Name',
-    name: 'name',
+    name: 'search',
     placeholder: 'Input category name',
   },
   {

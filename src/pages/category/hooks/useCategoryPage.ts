@@ -50,7 +50,7 @@ export const useCategoryPage = () => {
       ...pagination,
       ...createParams(query)
     }
-
+    console.log(params, createParams(query), query)
     const result = await runEffectSafe(
       getCategories(params)
     )
@@ -81,9 +81,12 @@ export const useCategoryPage = () => {
   }
 
   useEffect(() => {
-    fetchCategory()
     fetchCategoryType()
   }, [])
+
+  useEffect(() => {
+    fetchCategory()
+  }, [pagination, query])
 
   const onChangePagination = (page: number, pageSize: number) => {
     setPagination({

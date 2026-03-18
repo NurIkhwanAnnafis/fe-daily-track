@@ -1,6 +1,6 @@
 import type { CommonParams, CommonResponseList } from "../../types/common"
 
-export type Expense = {
+export type Income = {
   id: string
   name: string
   description: string | null
@@ -14,15 +14,15 @@ export type Expense = {
   updated_at: string | null
 }
 
-export type GetExpensesParams = CommonParams & {
+export type GetIncomesParams = CommonParams & {
   type: number
   category_id?: string
   transaction_date?: string
 }
 
-export type GetExpensesResponse = CommonResponseList<Expense>
+export type GetIncomesResponse = CommonResponseList<Income>
 
-export type ExpenseFilter = {
+export type IncomeFilter = {
   category_id: number | null
   transaction_date: Date
 }

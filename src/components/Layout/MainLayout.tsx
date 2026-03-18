@@ -30,8 +30,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   } = theme.useToken();
   const [selectedKeys, setSelectedKeys] = useState<string[]>(['/dashboard'])
   const navigate = useNavigate()
-  const menu = useMemo(() => createMenu(navigate), [navigate])
-  const title = menu?.find(x => x?.key === selectedKeys[0]) as MenuItemType | undefined
+  const menuItems = useMemo(() => createMenu(navigate), [navigate])
+  const currentMenu = menuItems?.find(x => x?.key === selectedKeys[0]) as MenuItemType | undefined
 
   return (
     <Layout hasSider>
@@ -46,7 +46,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         <Menu
           mode="inline"
           defaultSelectedKeys={selectedKeys}
-          items={menu}
+          items={menuItems}
           onClick={({ key }) => setSelectedKeys([key])}
         />
       </Sider>
@@ -55,7 +55,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           style={{ background: colorBgContainer }}
           className='pl-6! pr-6! pt-4! pb-4!'
         >
-          <h3 className='text-2xl font-semibold'>{title?.label}</h3>
+          <h3 className='text-2xl font-semibold'>{currentMenu?.title}</h3>
         </Header>
         <Content className='mt-6 mx-4' style={{ overflow: 'initial' }}>
           {children}

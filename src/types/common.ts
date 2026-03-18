@@ -18,6 +18,6 @@ export type CommonParams = {
 }
 
 export type CommonOptions = Array<{
-  value: number
+  value: string | number
   label: string
 }>

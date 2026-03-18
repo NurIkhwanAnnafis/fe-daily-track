@@ -1,19 +1,35 @@
-import { Fragment, useEffect, useState, type ReactNode } from "react"
+import { Fragment, useEffect, useMemo, type ReactNode } from "react"
 import { DatePicker, Divider, Form, Input, Select, type FormProps } from "antd"
 import type { UseFilter } from "./filter.type"
+import dayjs from "dayjs"
+import { parseAsIsoDateTime, parseAsJson, parseAsString, useQueryStates, type SingleParserBuilder } from "nuqs"
 
-export const useFilter = <T,>(schema: UseFilter) => {
-  const [appliedFilters, setAppliedFilters] = useState<{
-    query: T
-    latest_filter: string | null
-  } | null>(null)
+export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
+  const { queries, defaultValues } = useMemo(() => {
+    return schema.reduce((acc, item) => {
+      if (item.defaultValue) acc.defaultValues[item.name] = item.defaultValue.value
+
+      // Handle queryConfig
+      const queryConfigMap: Record<string, SingleParserBuilder<any>> = {
+        'select': parseAsJson((v) => v as any).withDefault(null),
+        'date': parseAsIsoDateTime.withDefault(new Date()),
+      }
+
+      if (queryConfigMap?.[item.type]) {
+        acc.queries[item.name] = queryConfigMap?.[item.type]
+      } else {
+        acc.queries[item.name] = parseAsString.withDefault('')
+      }
+
+      return acc
+    }, {
+      defaultValues: {} as Record<string, any>,
+      queries: {} as Record<string, any>
+    })
+  }, [schema])
+
+  const [appliedFilters, setAppliedFilters] = useQueryStates(queries)
   const [form] = Form.useForm()
-  const { defaultValues } = schema.reduce((acc, item) => {
-    if (item.defaultValue) acc.defaultValues[item.name] = item.defaultValue.value
-    return acc
-  }, {
-    defaultValues: {}
-  } as { defaultValues: Record<string, any> })
 
   useEffect(() => {
     if (Object.entries(defaultValues).length > 0) {
@@ -43,7 +59,7 @@ export const useFilter = <T,>(schema: UseFilter) => {
               name={item.name}
               className="mb-0! w-full"
             >
-              <DatePicker placeholder={item.placeholder} />
+              <DatePicker placeholder={item.placeholder} className="w-full" />
             </Form.Item>
           )
         case "select":
@@ -64,7 +80,7 @@ export const useFilter = <T,>(schema: UseFilter) => {
   const renderActiveFilter = () => {
     const values = form.getFieldsValue()
 
-    if (Object.entries(values).length === 0 || !appliedFilters) return null
+    if (!Object.entries(values).some(([, value]) => value)) return null
 
     return (
       <Fragment>
@@ -74,17 +90,18 @@ export const useFilter = <T,>(schema: UseFilter) => {
             Active Filters:
             {' '}
             {Object.entries(values).map(([key, value]) => {
+              const schemaItem = schema.find((item) => item.name === key)
               if (value) {
                 return (
                   <div key={`filter-${key}`} className="font-bold">
-                    {key}: {value as ReactNode}
+                    {schemaItem?.label}: {value as ReactNode}
                   </div>
                 )
               }
             })}
           </div>
           <p className="text-sm">
-            latest filter:
+            latest filter: {dayjs().format('DD MMM YYYY HH:mm:ss')}
           </p>
         </div>
       </Fragment>
@@ -92,10 +109,11 @@ export const useFilter = <T,>(schema: UseFilter) => {
   }
 
   const onSubmit: FormProps<T>['onFinish'] = (values) => {
-    setAppliedFilters({
-      query: values,
-      latest_filter: new Date().toISOString(),
-    })
+    const hasValue = Object.entries(values).some(([, value]) => value)
+
+    if (!hasValue) return
+
+    setAppliedFilters(values)
   };
 
   const onReset = () => {
@@ -105,7 +123,7 @@ export const useFilter = <T,>(schema: UseFilter) => {
 
   return {
     form,
-    query: form.getFieldsValue(),
+    query: appliedFilters,
     renderSchema,
     renderActiveFilter,
     onSubmit,
