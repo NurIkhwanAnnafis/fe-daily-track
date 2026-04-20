@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { Card, Dropdown } from "antd"
+import { Card, Dropdown, Tag } from "antd"
 import { FileImageOutlined, MoreOutlined } from "@ant-design/icons"
 import DataGrid from "../../components/DataTable/DataGrid"
 import { Filter } from "../../components/Filter/Filter"
@@ -7,51 +7,59 @@ import PageContainer from "../../components/PageContainer/PageContainer"
 import type { Category, CategoryFilter } from "./category.type"
 import FormCategory from "./component/FormCategory"
 import { useCategoryPage } from "./hooks/useCategoryPage"
+import { colorMap } from "./category.constant"
+import PopupConfirm from "../../components/Popup/PopupConfirm"
 
 const CategoryPage = () => {
   const {
+    refFormCategory,
     datasource,
     form,
-    modal,
     categoryTypes,
-    handleCreate,
-    handleCloseModal,
     onReset,
     onSubmit,
     renderSchema,
     renderActiveFilter,
     onChangePagination,
     fetchCategory,
+    handleDelete,
   } = useCategoryPage()
 
-  const items = [
-  {
-    key: '1',
-    label: (
-      <a onClick={(e) => e.preventDefault()}>
-        Edit
-      </a>
-    ),
-  },
-  {
-    key: '2',
-    label: (
-      <a onClick={(e) => e.preventDefault()} className="text-red-500!">
-        Delete
-      </a>
-    ),
-  },
-]
+  const items = (item: Category) => [
+    {
+      key: '1',
+      label: (
+        <a onClick={(e) => refFormCategory.current?.fetchDetail(item.id)}>
+          Edit
+        </a>
+      ),
+    },
+    {
+      key: '2',
+      label: (
+        <PopupConfirm
+          title="Delete the Category"
+          description={`Are you sure to delete Category ${item.name}?`}
+          onConfirm={() => handleDelete(item)}
+          okText="Yes"
+          cancelText="No"
+        >
+          <a onClick={(e) => e.preventDefault()} className="text-red-500!">
+            Delete
+          </a>
+        </PopupConfirm>
+      ),
+    },
+  ]
 
   return (
     <PageContainer
       title="Category"
       description="Manage and organize your spending and earning habits"
-      onCreate={() => handleCreate()}
+      onCreate={() => refFormCategory.current?.handleCreate()}
     >
       <FormCategory
-        modal={modal}
-        closeModal={handleCloseModal}
+        ref={refFormCategory}
         onSuccess={fetchCategory}
         categoryTypes={categoryTypes}
       />
@@ -73,6 +81,8 @@ const CategoryPage = () => {
       </Filter.Root>
 
       <DataGrid<Category>
+        gutter={[16, 16]}
+        span={4}
         component={(item) => (
           <Card
             className="w-full border-2! h-50"
@@ -84,17 +94,19 @@ const CategoryPage = () => {
               {item.logo ? (
                 <img src={item.logo} alt={item.name} className="w-15 h-15" />
               ) : <FileImageOutlined className="text-5xl!" style={{ color: item.color ?? '#9ca3af' }} />}
-              <Dropdown menu={{ items }} trigger={['click']}>
+              <Dropdown menu={{ items: items(item) }} trigger={['click']}>
                 <MoreOutlined className="text-2xl! cursor-pointer" />
               </Dropdown>
             </div>
-            <div>
+            <div className="flex flex-col gap-2">
               <p className="font-semibold text-neutral-950 mb-0!">
                 {item.name}
               </p>
-              <p className="font-semibold text-neutral-800 mb-0!">
-                {item.description ?? '-'}
-              </p>
+              <div className="flex gap-2">
+                {item.category_types.map((type) => (
+                  <Tag key={type} color={colorMap[type as keyof typeof colorMap]}>{type}</Tag>
+                ))}
+              </div>
             </div>
             <div>
               <p className="font-semibold text-neutral-400">
@@ -104,7 +116,7 @@ const CategoryPage = () => {
           </Card>
         )}
         createText="Add New Category"
-        onCreate={() => { }}
+        onCreate={() => refFormCategory.current?.handleCreate()}
         dataSource={datasource.data}
         componentClassName="h-50"
         meta={{

@@ -1,38 +1,50 @@
 import { Form, Input, Select } from "antd"
 import ModalForm from "../../../components/Form/ModalForm"
-import type { Category, CategoryFieldType } from "../category.type"
+import type { CategoryFieldType } from "../category.type"
 import type { CommonOptions } from "../../../types/common"
 import { useFormCategory } from "../hooks/useFormCategory"
+import { forwardRef, useImperativeHandle } from "react"
 
 type Props = {
-  modal: {
-    open: boolean
-    type: 'create' | 'edit'
-    data?: Category
-  }
-  closeModal: () => void
-  onSuccess: () => void
+  onSuccess: () => void | Promise<unknown>
   categoryTypes: CommonOptions
 }
 
-const FormCategory: React.FC<Props> = (props) => {
+export type FormCategoryRef = {
+  fetchDetail: (id: string) => Promise<void>
+  handleCreate: () => void
+  handleCloseModal: () => void
+}
+
+const FormCategory = forwardRef<FormCategoryRef, Props>((props, ref) => {
   const {
-    modal,
-    closeModal,
     onSuccess,
     categoryTypes,
   } = props
 
   const {
+    modal,
+    form,
     onSubmit,
+    handleCreate,
+    fetchDetail,
+    handleCloseModal,
   } = useFormCategory({ onSuccess })
+
+  useImperativeHandle(ref, () => ({
+    fetchDetail,
+    handleCreate,
+    handleCloseModal,
+  }))
 
   return (
     <ModalForm<CategoryFieldType>
+      form={form}
       modal={modal}
       title="Category"
-      onCancel={closeModal}
+      onCancel={handleCloseModal}
       onSubmit={onSubmit}
+      name="form-category"
     >
       <Form.Item<CategoryFieldType>
         label="Category Name"
@@ -46,15 +58,15 @@ const FormCategory: React.FC<Props> = (props) => {
 
       <Form.Item<CategoryFieldType>
         label="Category Type"
-        name="type_id"
+        name="type_ids"
         rules={[{ required: true, message: 'Please select category type!' }]}
         className="w-full mb-4! text-neutral-950"
         required
       >
-        <Select options={categoryTypes} placeholder="Select category type" allowClear />
+        <Select options={categoryTypes} placeholder="Select category type" allowClear mode="multiple" />
       </Form.Item>
     </ModalForm>
   )
-}
+})
 
 export default FormCategory

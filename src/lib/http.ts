@@ -135,28 +135,25 @@ const httpServices = <T>(
     currentBody = cleanObject(body as Record<string, string>)
   }
 
-  const methodGet = HttpClientRequest.get(url)
-  const methodPost = HttpClientRequest.post(url).pipe(
-    HttpClientRequest.setHeader('Content-Type', 'application/json'),
-    HttpClientRequest.bodyJson(currentBody),
-  )
-  const methodPut = HttpClientRequest.put(url).pipe(
-    HttpClientRequest.setHeader('Content-Type', 'application/json'),
-    HttpClientRequest.bodyJson(currentBody),
-  )
-  const methodDelete = HttpClientRequest.del(url)
+  const methodGet = (): Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never> =>
+    Effect.succeed(HttpClientRequest.get(url))
+  const methodPost = (): Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never> =>
+    HttpClientRequest.post(url).pipe(
+      HttpClientRequest.setHeader('Content-Type', 'application/json'),
+      HttpClientRequest.bodyJson(currentBody),
+    )
+  const methodPut = (): Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never> =>
+    HttpClientRequest.put(url).pipe(
+      HttpClientRequest.setHeader('Content-Type', 'application/json'),
+      HttpClientRequest.bodyJson(currentBody),
+    )
+  const methodDelete = (): Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never> =>
+    Effect.succeed(HttpClientRequest.del(url))
 
-  // Lift a plain request or an effectful request into Effect, then optionally add headers
+  // Add auth and custom headers to any request Effect
   const reqs = (
-    httpClient:
-      | HttpClientRequest.HttpClientRequest
-      | Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never>,
+    request: Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never>,
   ): Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never> => {
-    const asEffect: Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never> =
-      Effect.isEffect(httpClient)
-        ? (httpClient as Effect.Effect<HttpClientRequest.HttpClientRequest, HttpBody.HttpBodyError, never>)
-        : Effect.succeed(httpClient as HttpClientRequest.HttpClientRequest)
-
     const token = getUserLocalStorage()?.token
     const mergedHeaders: Record<string, string> = {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
@@ -164,18 +161,18 @@ const httpServices = <T>(
     }
 
     if (Object.keys(mergedHeaders).length > 0) {
-      return asEffect.pipe(
+      return request.pipe(
         Effect.map((req) => HttpClientRequest.setHeaders(mergedHeaders)(req)),
       )
     }
-    return asEffect
+    return request
   }
 
   return {
-    get: () => executeJson<T>(reqs(methodGet)),
-    post: () => executeJson<T>(reqs(methodPost)),
-    put: () => executeJson<T>(reqs(methodPut)),
-    delete: () => executeJson<T>(reqs(methodDelete)),
+    get: () => executeJson<T>(reqs(methodGet())),
+    post: () => executeJson<T>(reqs(methodPost())),
+    put: () => executeJson<T>(reqs(methodPut())),
+    delete: () => executeJson<T>(reqs(methodDelete())),
   }
 }
 

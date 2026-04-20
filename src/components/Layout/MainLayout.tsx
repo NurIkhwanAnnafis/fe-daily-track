@@ -18,6 +18,7 @@ const siderStyle: React.CSSProperties = {
   scrollbarGutter: 'stable',
   accentColor: 'white',
   background: 'white',
+  borderRight: '2px solid #f0f0f0',
 };
 
 type MainLayoutProps = {
@@ -53,7 +54,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
       <Layout>
         <Header
           style={{ background: colorBgContainer }}
-          className='pl-6! pr-6! pt-4! pb-4!'
+          className='pl-6! pr-6! pt-4! pb-4! border-b-2! border-[#f0f0f0]!'
         >
           <h3 className='text-2xl font-semibold'>{currentMenu?.title}</h3>
         </Header>

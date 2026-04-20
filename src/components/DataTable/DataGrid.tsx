@@ -1,5 +1,6 @@
 import { Row, Col, Pagination, Card } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
+import type { Gutter } from "antd/es/grid/row"
 
 interface DataGridProps<T> {
   meta: {
@@ -9,7 +10,7 @@ interface DataGridProps<T> {
   }
   component: (item: T) => React.ReactNode
   componentClassName?: string
-  gutter?: number
+  gutter?: Gutter | [Gutter, Gutter]
   span?: number
   dataSource: T[]
   createText?: string

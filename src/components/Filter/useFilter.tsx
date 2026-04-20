@@ -11,14 +11,14 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
 
       // Handle queryConfig
       const queryConfigMap: Record<string, SingleParserBuilder<any>> = {
-        'select': parseAsJson((v) => v as any).withDefault(null),
-        'date': parseAsIsoDateTime.withDefault(new Date()),
+        'select': parseAsJson((v) => v as any),
+        'date': parseAsIsoDateTime,
       }
 
       if (queryConfigMap?.[item.type]) {
         acc.queries[item.name] = queryConfigMap?.[item.type]
       } else {
-        acc.queries[item.name] = parseAsString.withDefault('')
+        acc.queries[item.name] = parseAsString
       }
 
       return acc

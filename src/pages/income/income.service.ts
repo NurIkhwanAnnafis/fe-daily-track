@@ -6,4 +6,4 @@ import type { HttpClient } from '@effect/platform'
 export const getIncomes = (
   params: GetIncomesParams
 ): Effect.Effect<GetIncomesResponse, HttpError, HttpClient.HttpClient> =>
-  http.get('/transactions', { params })
+  http.get('/incomes', { params })

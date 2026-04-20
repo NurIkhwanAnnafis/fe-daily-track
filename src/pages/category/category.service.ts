@@ -1,5 +1,5 @@
 import type { Effect } from "effect";
-import type { CategoryFieldType, CreateCategoryResponse, GetCategoriesResponse, GetCategoryTypeResponse } from "./category.type";
+import type { CategoryFieldType, CreateCategoryResponse, GetCategoriesResponse, GetCategoryByIdResponse, GetCategoryTypeResponse } from "./category.type";
 import type { HttpError } from "../../lib/http";
 import type { HttpClient } from "@effect/platform";
 import http from "../../lib/http";
@@ -15,6 +15,11 @@ export const getCategoryType = (
 ): Effect.Effect<GetCategoryTypeResponse, HttpError, HttpClient.HttpClient> =>
   http.get('/category-types', { params })
 
+export const getCategoryById = (
+  id: string
+): Effect.Effect<GetCategoryByIdResponse, HttpError, HttpClient.HttpClient> =>
+  http.get(`/categories/${id}`)
+
 export const createCategory = (
   data: CategoryFieldType
 ): Effect.Effect<CreateCategoryResponse, HttpError, HttpClient.HttpClient> =>
@@ -25,3 +30,8 @@ export const updateCategory = (
   id: string
 ): Effect.Effect<CreateCategoryResponse, HttpError, HttpClient.HttpClient> =>
   http.put(`/categories/${id}`, data)
+
+export const deleteCategory = (
+  id: string
+): Effect.Effect<{ id: string }, HttpError, HttpClient.HttpClient> =>
+  http.delete(`/categories/${id}`)

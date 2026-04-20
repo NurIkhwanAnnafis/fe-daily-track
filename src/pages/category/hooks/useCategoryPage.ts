@@ -1,29 +1,22 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { parseAsString, useQueryStates } from 'nuqs'
 import { useFilter } from "../../../components/Filter/useFilter"
-import { createColumns } from "../category.constant"
 import { schemaFilter } from "../category.schema"
 import type { Category, CategoryFilter } from "../category.type"
 import type { CommonOptions, CommonResponseList } from "../../../types/common"
 import { defaultResponseList } from "../../../constants/common"
 import { runEffectSafe } from "../../../lib/runtime"
-import { getCategories, getCategoryType } from "../category.service"
+import { deleteCategory, getCategories, getCategoryType } from "../category.service"
 import { createParams } from "../../../utils/params"
 import { message } from "antd"
 import { capitalizeFirstLetter } from "../../../utils/string"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
+import type { FormCategoryRef } from "../component/FormCategory"
 
 export const useCategoryPage = () => {
+  const refFormCategory = useRef<FormCategoryRef>(null)
   const [categoryTypes, setCategoryTypes] = useState<CommonOptions>([])
   const [datasource, setDatasource] = useState<CommonResponseList<Category>>(defaultResponseList)
-  const [modal, setModal] = useState<{
-    open: boolean
-    type: 'create' | 'edit'
-    data?: Category
-  }>({
-    open: false,
-    type: 'create'
-  })
   const [pagination, setPagination] = useQueryStates(
     {
       page: parseAsString.withDefault('1'),
@@ -50,17 +43,16 @@ export const useCategoryPage = () => {
       ...pagination,
       ...createParams(query)
     }
-    console.log(params, createParams(query), query)
     const result = await runEffectSafe(
       getCategories(params)
     )
-
+    
+    setLoading(false)
     if (!result.success) {
       return message.error('Get Category Error')
     }
 
     setDatasource(result.data)
-    setLoading(false)
   }
 
   const fetchCategoryType = async () => {
@@ -80,6 +72,19 @@ export const useCategoryPage = () => {
     setCategoryTypes(options)
   }
 
+  const handleDelete = async (record: Category) => {
+    setLoading(true)
+    const result = await runEffectSafe(deleteCategory(record.id))
+    
+    setLoading(false)
+    if (!result.success) {
+      return message.error('Delete Category Error')
+    }
+
+    message.success(`Delete Category ${record.name} Success`)
+    fetchCategory()
+  }
+
   useEffect(() => {
     fetchCategoryType()
   }, [])
@@ -95,49 +100,17 @@ export const useCategoryPage = () => {
     })
   }
 
-  const handleCloseModal = () => {
-    setModal({
-      open: false,
-      type: 'create'
-    })
-  }
-
-  const handleCreate = () => {
-    setModal({
-      open: true,
-      type: 'create'
-    })
-  }
-
-  const handleEdit = (record: Category) => {
-    setModal({
-      open: true,
-      type: 'edit',
-      data: record
-    })
-  }
-
-  const handleDelete = (record: Category) => {
-    console.log("Delete", record)
-  }
-
-  const column = createColumns({ handleEdit, handleDelete })
-
   return {
+    refFormCategory,
     datasource,
-    column,
     form,
-    modal,
     categoryTypes,
-    handleCreate,
-    handleEdit,
-    handleDelete,
-    handleCloseModal,
     onReset,
     onSubmit,
     renderSchema,
     renderActiveFilter,
     onChangePagination,
     fetchCategory,
+    handleDelete,
   }
 }

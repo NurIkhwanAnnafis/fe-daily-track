@@ -1,5 +1,5 @@
 import { Button, Form, Modal } from "antd"
-import type { FormProps } from "antd"
+import type { FormInstance, FormProps } from "antd"
 
 type Props<T> = {
   modal: {
@@ -10,6 +10,8 @@ type Props<T> = {
   onCancel: () => void
   onSubmit: (data: T) => void
   children: React.ReactNode
+  name: string
+  form: FormInstance<T>
 }
 
 function ModalForm<T>(props: Props<T>) {
@@ -19,7 +21,14 @@ function ModalForm<T>(props: Props<T>) {
     onSubmit,
     onCancel,
     children,
+    name,
+    form,
   } = props
+
+  const handleCancel = () => {
+    form.resetFields()
+    onCancel()
+  }
 
   const modalTitle = modal.type === 'create' ? `Create ${title}` : `Edit ${title}`
 
@@ -29,7 +38,7 @@ function ModalForm<T>(props: Props<T>) {
       closable={{ 'aria-label': 'Custom Close Button' }}
       open={modal.open}
       footer={null}
-      onCancel={onCancel}
+      onCancel={handleCancel}
       styles={{
         container: {
           paddingBottom: 0
@@ -37,7 +46,8 @@ function ModalForm<T>(props: Props<T>) {
       }}
     >
       <Form<T>
-        name={`form-title`}
+        form={form}
+        name={name}
         layout="vertical"
         onFinish={onSubmit as FormProps<T>['onFinish']}
         autoComplete="off"
@@ -46,7 +56,7 @@ function ModalForm<T>(props: Props<T>) {
         {children}
 
         <div className="flex justify-end gap-2!">
-          <Button onClick={onCancel} color="danger">Cancel</Button>
+          <Button onClick={handleCancel} color="danger">Cancel</Button>
           <Form.Item>
             <Button type="primary" htmlType="submit">
               Submit

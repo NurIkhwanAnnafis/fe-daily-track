@@ -1,5 +1,5 @@
-import { createContext, useContext } from "react"
-import { Button, Form, type FormInstance } from "antd"
+import { createContext } from "react"
+import { Button, Card, Form, type FormInstance } from "antd"
 import { ReloadOutlined } from "@ant-design/icons"
 
 type FilterContextType<T> = {
@@ -71,7 +71,7 @@ const FilterRoot = <T,>({ children, onSubmit, form }: FilterRootProps<T>) => {
       value={{ form }}
     >
       <div className="relative">
-        <div className="group p-5 bg-white space-y-4">
+        <Card className="border-2! p-5 bg-white space-y-4">
           <Form
             form={form}
             onFinish={onSubmit}
@@ -81,7 +81,7 @@ const FilterRoot = <T,>({ children, onSubmit, form }: FilterRootProps<T>) => {
           >
             {children}
           </Form>
-        </div>
+        </Card>
       </div>
     </FilterContext.Provider>
   )
