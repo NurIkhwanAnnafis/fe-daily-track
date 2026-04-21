@@ -9,7 +9,7 @@ export type Expense = {
     name: string
   } | null
   amount: number
-  transaction_date: string
+  date: string
   created_at: string
   updated_at: string | null
 }
@@ -22,7 +22,43 @@ export type GetExpensesParams = CommonParams & {
 
 export type GetExpensesResponse = CommonResponseList<Expense>
 
+export type ExpenseDetail = {
+  id: string
+  merchant_name: string
+  description: string | null
+  category: {
+    id: string
+    name: string
+  } | null
+  amount: number
+  date: string
+  created_at: string
+  updated_at: string | null
+}
+
+export type CreateExpenseResponse = {
+  id: string
+}
+
+export type UpdateExpenseResponse = {
+  id: string
+}
+
+export type GetExpenseDetailResponse = ExpenseDetail
+
+export type DeleteExpenseResponse = {
+  id: string
+}
+
 export type ExpenseFilter = {
   category_id: number | null
   transaction_date: Date
+}
+
+export type ExpenseFieldType = {
+  merchant_name: string
+  description?: string | null
+  amount: number
+  date: string
+  category_id: string
 }

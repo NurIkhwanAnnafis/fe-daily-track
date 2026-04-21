@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { parseAsString, useQueryStates } from 'nuqs'
 import { useFilter } from "../../../components/Filter/useFilter"
 import { createColumns } from "../expense.constant"
@@ -14,6 +14,7 @@ import { message } from "antd"
 import { capitalizeFirstLetter } from "../../../utils/string"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import { TRANSACTION_TYPE } from "../../../constants/transaction"
+import type { FormExpenseRef } from "../component/FormExpense"
 
 export const useExpensePage = () => {
   const [categories, setCategories] = useState<CommonOptions>([])
@@ -27,6 +28,7 @@ export const useExpensePage = () => {
       history: 'push',
     }
   )
+  const refFormExpense = useRef<FormExpenseRef>(null)
 
   const {
     form,
@@ -88,7 +90,7 @@ export const useExpensePage = () => {
   }
 
   const handleEdit = (record: Expense) => {
-    console.log('Edit', record)
+    refFormExpense.current?.fetchDetail(record.id)
   }
 
   const handleDelete = (record: Expense) => {
@@ -102,6 +104,7 @@ export const useExpensePage = () => {
     column,
     form,
     categories,
+    refFormExpense,
     handleEdit,
     handleDelete,
     onReset,

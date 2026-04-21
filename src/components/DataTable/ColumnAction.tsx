@@ -11,12 +11,15 @@ const ColumnAction = <T,>({ handleEdit, handleDelete, record }: Props<T>) => {
     <Space>
       <Button
         htmlType="button"
+        variant="outlined"
         onClick={() => handleEdit(record)}
       >
         Edit
       </Button>
       <Button
         htmlType="button"
+        variant="outlined"
+        color="red"
         onClick={() => handleDelete(record)}
       >
         Delete

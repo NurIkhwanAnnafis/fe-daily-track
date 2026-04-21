@@ -30,4 +30,5 @@ export type FilterDateSchema = FilterFieldSchema & {
 export type FilterSelectSchema = FilterFieldSchema & {
   type: "select"
   options: CommonOptions
+  multiple?: boolean
 }

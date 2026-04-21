@@ -25,7 +25,7 @@ export const schemaFilter = (props: SchemaFilterProps): FilterSchema[] => [
     type: 'date',
     id: 'transaction_date',
     label: 'Transaction Date',
-    name: 'transaction_date',
+    name: 'date',
     placeholder: 'Select date',
   },
 ]

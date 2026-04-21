@@ -70,7 +70,7 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
               name={item.name}
               className="mb-0! w-full"
             >
-              <Select allowClear placeholder={item.placeholder} options={item.options} />
+              <Select allowClear placeholder={item.placeholder} options={item.options} labelInValue mode={item.multiple ? 'multiple' : undefined} />
             </Form.Item>
           )
       }
@@ -78,9 +78,7 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
   }
 
   const renderActiveFilter = () => {
-    const values = form.getFieldsValue()
-
-    if (!Object.entries(values).some(([, value]) => value)) return null
+    if (!Object.entries(appliedFilters).some(([, value]) => value)) return null
 
     return (
       <Fragment>
@@ -89,12 +87,27 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
           <div className="flex gap-2">
             Active Filters:
             {' '}
-            {Object.entries(values).map(([key, value]) => {
+            {Object.entries(appliedFilters).map(([key, value]) => {
               const schemaItem = schema.find((item) => item.name === key)
-              if (value) {
+
+              if (Array.isArray(value)) {
                 return (
                   <div key={`filter-${key}`} className="font-bold">
-                    {schemaItem?.label}: {value as ReactNode}
+                    {schemaItem?.label}: {value.map((item) => item.label).join(', ')}
+                  </div>
+                )
+              } else if (value) {
+                if (schemaItem?.type === 'date') {
+                  return (
+                    <div key={`filter-${key}`} className="font-bold">
+                      {schemaItem?.label}: {dayjs(value).format('DD MMM YYYY')}
+                    </div>
+                  )
+                }
+
+                return (
+                  <div key={`filter-${key}`} className="font-bold">
+                    {schemaItem?.label}: {value.label}
                   </div>
                 )
               }

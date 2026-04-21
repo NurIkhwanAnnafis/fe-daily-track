@@ -1,6 +1,8 @@
+import dayjs from "dayjs"
 import type { ColumnsType } from "antd/es/table"
 import type { Expense } from "./expense.type"
 import ColumnAction from "../../components/DataTable/ColumnAction"
+import { numberFormatter } from "../../utils/number"
 
 type Props = {
   handleEdit: (record: Expense) => void
@@ -9,15 +11,15 @@ type Props = {
 
 export const createColumns = ({ handleEdit, handleDelete }: Props): ColumnsType<Expense> => [
   {
-    title: "No",
-    dataIndex: "no",
-    key: "no",
-    render: (_, record, index) => index + 1,
+    title: "Transaction Date",
+    dataIndex: "date",
+    key: "date",
+    render: (_, record) => dayjs(record.date).format('DD MMM YYYY HH:mm:ss'),
   },
   {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
+    title: "Merchant Name",
+    dataIndex: "merchant_name",
+    key: "merchant_name",
   },
   {
     title: "Description",
@@ -34,11 +36,7 @@ export const createColumns = ({ handleEdit, handleDelete }: Props): ColumnsType<
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
-  },
-  {
-    title: "Transaction Date",
-    dataIndex: "transaction_date",
-    key: "transaction_date",
+    render: (_, record) => numberFormatter(record.amount, 'id-ID'),
   },
   {
     title: "Actions",

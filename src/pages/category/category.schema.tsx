@@ -17,8 +17,9 @@ export const schemaFilter = (props: SchemaFilterProps): FilterSchema[] => [
     type: 'select',
     id: 'type_id',
     label: 'Category Type',
-    name: 'type_id',
+    name: 'type_ids',
     placeholder: 'Select category type',
-    options: props.options
+    options: props.options,
+    multiple: true
   },
 ]

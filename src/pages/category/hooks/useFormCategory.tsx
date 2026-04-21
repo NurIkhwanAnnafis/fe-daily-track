@@ -4,6 +4,7 @@ import { runEffectSafe } from "../../../lib/runtime"
 import { createCategory, getCategoryById, updateCategory } from "../category.service"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import { useEffect, useState } from "react"
+import { useModal } from "../../../hooks/useModal"
 
 type Props = {
   onSuccess: () => void
@@ -13,14 +14,7 @@ export const useFormCategory = (props: Props) => {
   const { onSuccess } = props
   const { setLoading } = useBlockLoading()
   const [form] = Form.useForm<CategoryFieldType>()
-  const [modal, setModal] = useState<{
-    open: boolean
-    type: 'create' | 'edit'
-    data?: CategoryDetail
-  }>({
-    open: false,
-    type: 'create',
-  })
+  const modal = useModal<CategoryDetail>()
   const [id, setId] = useState<string | null>(null)
 
   const onSubmit: FormProps<CategoryFieldType>['onFinish'] = async (values) => {
@@ -43,14 +37,14 @@ export const useFormCategory = (props: Props) => {
   }
 
   const handleCreate = () => {
-    setModal({
+    modal.setModal({
       open: true,
       type: 'create',
     })
   }
 
   const handleEdit = (data: CategoryDetail) => {
-    setModal({
+    modal.setModal({
       open: true,
       type: 'edit',
       data,
@@ -63,7 +57,7 @@ export const useFormCategory = (props: Props) => {
   }
 
   const handleCloseModal = () => {
-    setModal({
+    modal.setModal({
       open: false,
       type: 'create',
     })
@@ -90,9 +84,9 @@ export const useFormCategory = (props: Props) => {
   }, [])
 
   return {
-    modal,
+    modal: modal.modal,
     form,
-    setModal,
+    setModal: modal.modal,
     onSubmit,
     handleCreate,
     handleEdit,
