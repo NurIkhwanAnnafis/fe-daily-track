@@ -1,8 +1,20 @@
-import { Fragment, useEffect, useMemo, type ReactNode } from "react"
+import { Fragment, useEffect, useMemo } from "react"
 import { DatePicker, Divider, Form, Input, Select, type FormProps } from "antd"
 import type { UseFilter } from "./filter.type"
 import dayjs from "dayjs"
-import { parseAsIsoDateTime, parseAsJson, parseAsString, useQueryStates, type SingleParserBuilder } from "nuqs"
+import { createParser, parseAsIsoDateTime, parseAsString, useQueryStates, type SingleParserBuilder } from "nuqs"
+
+const parseAsJson = createParser({
+  parse(value) {
+    if (!value) {
+      return null
+    }
+    return JSON.parse(decodeURIComponent(value))
+  },
+  serialize(value) {
+    return encodeURIComponent(JSON.stringify(value))
+  },
+})
 
 export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
   const { queries, defaultValues } = useMemo(() => {
@@ -11,14 +23,14 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
 
       // Handle queryConfig
       const queryConfigMap: Record<string, SingleParserBuilder<any>> = {
-        'select': parseAsJson((v) => v as any),
+        'select': parseAsJson.withDefault(null),
         'date': parseAsIsoDateTime,
       }
 
       if (queryConfigMap?.[item.type]) {
         acc.queries[item.name] = queryConfigMap?.[item.type]
       } else {
-        acc.queries[item.name] = parseAsString
+        acc.queries[item.name] = parseAsString.withDefault('')
       }
 
       return acc
@@ -87,13 +99,14 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
           <div className="flex gap-2">
             Active Filters:
             {' '}
-            {Object.entries(appliedFilters).map(([key, value]) => {
+            {Object.entries(appliedFilters).map(([key, value], index) => {
               const schemaItem = schema.find((item) => item.name === key)
 
               if (Array.isArray(value)) {
                 return (
                   <div key={`filter-${key}`} className="font-bold">
                     {schemaItem?.label}: {value.map((item) => item.label).join(', ')}
+                    {index !== Object.keys(appliedFilters).length - 1 && ', '}
                   </div>
                 )
               } else if (value) {
@@ -101,6 +114,7 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
                   return (
                     <div key={`filter-${key}`} className="font-bold">
                       {schemaItem?.label}: {dayjs(value).format('DD MMM YYYY')}
+                      {index !== Object.keys(appliedFilters).length - 1 && ', '}
                     </div>
                   )
                 }
@@ -108,6 +122,7 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
                 return (
                   <div key={`filter-${key}`} className="font-bold">
                     {schemaItem?.label}: {value.label}
+                    {index !== Object.keys(appliedFilters).length - 1 && ', '}
                   </div>
                 )
               }
@@ -122,11 +137,15 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
   }
 
   const onSubmit: FormProps<T>['onFinish'] = (values) => {
-    const hasValue = Object.entries(values).some(([, value]) => value)
+    let hasValue = false, newValues: Record<string, any> = {}
+    for (const key in values) {
+      if (values[key]) {
+        hasValue = true
+      }
+      newValues[key] = values[key] || null
+    }
 
-    if (!hasValue) return
-
-    setAppliedFilters(values)
+    setAppliedFilters(newValues)
   };
 
   const onReset = () => {
