@@ -1,12 +1,23 @@
 import { Button, Space } from "antd"
+import PopupConfirm from "../Popup/PopupConfirm"
 
 type Props<T> = {
   handleEdit: (record: T) => void
   handleDelete: (record: T) => void
   record: T
+  titleDelete?: string
+  descriptionDelete?: string
 }
 
-const ColumnAction = <T,>({ handleEdit, handleDelete, record }: Props<T>) => {
+const ColumnAction = <T,>(props: Props<T>) => {
+  const {
+    handleEdit,
+    handleDelete,
+    record,
+    titleDelete = 'Delete',
+    descriptionDelete = 'Are you sure to delete this item?',
+  } = props
+
   return (
     <Space>
       <Button
@@ -16,14 +27,21 @@ const ColumnAction = <T,>({ handleEdit, handleDelete, record }: Props<T>) => {
       >
         Edit
       </Button>
-      <Button
-        htmlType="button"
-        variant="outlined"
-        color="red"
-        onClick={() => handleDelete(record)}
+      <PopupConfirm
+        title={titleDelete}
+        description={descriptionDelete}
+        onConfirm={() => handleDelete(record)}
+        okText="Yes"
+        cancelText="No"
       >
-        Delete
-      </Button>
+        <Button
+          htmlType="button"
+          variant="outlined"
+          color="red"
+        >
+          Delete
+        </Button>
+      </PopupConfirm>
     </Space>
   )
 }

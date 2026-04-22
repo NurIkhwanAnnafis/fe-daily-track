@@ -3,25 +3,35 @@ import { Filter } from "../../components/Filter/Filter"
 import PageContainer from "../../components/PageContainer/PageContainer"
 import type { IncomeFilter } from "./income.type"
 import { useIncomePage } from "./hooks/useIncomePage"
+import FormIncome from "./component/FormIncome"
 
 const Income = () => {
   const {
     datasource,
     column,
     form,
+    categories,
+    refFormIncome,
     onReset,
     onSubmit,
     renderSchema,
     renderActiveFilter,
     onChangePagination,
+    fetchIncomes,
   } = useIncomePage()
 
   return (
     <PageContainer
       title="Income"
       description="Track and manage your income transactions"
-      onCreate={() => { }}
+      onCreate={() => refFormIncome.current?.handleCreate()}
     >
+      <FormIncome
+        ref={refFormIncome}
+        categories={categories}
+        onSuccess={fetchIncomes}
+      />
+
       <Filter.Root<IncomeFilter> onSubmit={onSubmit} form={form}>
         <Filter.Container className="">
           <div className="grid grid-cols-4 gap-4">

@@ -47,6 +47,8 @@ export const createColumns = ({ handleEdit, handleDelete }: Props): ColumnsType<
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         record={record}
+        titleDelete="Delete the Expense"
+        descriptionDelete={`Are you sure to delete this expense?`}
       />
     ),
   },

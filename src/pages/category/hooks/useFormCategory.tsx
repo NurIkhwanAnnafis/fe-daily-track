@@ -17,6 +17,15 @@ export const useFormCategory = (props: Props) => {
   const modal = useModal<CategoryDetail>()
   const [id, setId] = useState<string | null>(null)
 
+  const handleCloseModal = () => {
+    modal.setModal({
+      open: false,
+      type: 'create',
+    })
+    setId(null)
+    form.resetFields()
+  }
+
   const onSubmit: FormProps<CategoryFieldType>['onFinish'] = async (values) => {
     setLoading(true)
     let result = null
@@ -33,6 +42,7 @@ export const useFormCategory = (props: Props) => {
     }
 
     message.success(`${id ? 'Update' : 'Create'} category success`)
+    handleCloseModal()
     onSuccess()
   }
 
@@ -54,15 +64,6 @@ export const useFormCategory = (props: Props) => {
       name: data.name,
       type_ids: data.category_types.map((type) => type.type_id),
     })
-  }
-
-  const handleCloseModal = () => {
-    modal.setModal({
-      open: false,
-      type: 'create',
-    })
-    setId(null)
-    form.resetFields()
   }
 
   const fetchDetail = async (id: string) => {

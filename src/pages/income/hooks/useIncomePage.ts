@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { parseAsString, useQueryStates } from 'nuqs'
 import { useFilter } from "../../../components/Filter/useFilter"
 import { createColumns } from "../income.constant"
@@ -7,13 +7,14 @@ import type { Income, IncomeFilter } from "../income.type"
 import type { CommonOptions, CommonResponseList } from "../../../types/common"
 import { defaultResponseList } from "../../../constants/common"
 import { runEffectSafe } from "../../../lib/runtime"
-import { getIncomes } from "../income.service"
+import { deleteIncome, getIncomes } from "../income.service"
 import { getCategories } from "../../category/category.service"
 import { createParams } from "../../../utils/params"
 import { message } from "antd"
 import { capitalizeFirstLetter } from "../../../utils/string"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import { TRANSACTION_TYPE } from "../../../constants/transaction"
+import type { FormIncomeRef } from "../component/FormIncome"
 
 export const useIncomePage = () => {
   const [categories, setCategories] = useState<CommonOptions>([])
@@ -36,6 +37,7 @@ export const useIncomePage = () => {
     renderSchema,
     renderActiveFilter,
   } = useFilter<IncomeFilter>(schemaFilter({ categories }))
+  const refFormIncome = useRef<FormIncomeRef>(null)
 
   const { setLoading } = useBlockLoading()
 
@@ -88,12 +90,19 @@ export const useIncomePage = () => {
   }
 
   const handleEdit = (record: Income) => {
-    console.log('Edit', record)
+    refFormIncome.current?.fetchDetail(record.id)
   }
 
-  const handleDelete = (record: Income) => {
-    console.log('Delete', record)
-  }
+  const handleDelete = async (record: Income) => {
+      setLoading(true)
+      const result = await runEffectSafe(deleteIncome(record.id))
+      setLoading(false)
+  
+      if (!result.success) return message.error('Failed to delete income')
+  
+      message.success('Income deleted successfully')
+      fetchIncomes()
+    }
 
   const column = createColumns({ handleEdit, handleDelete })
 
@@ -102,6 +111,7 @@ export const useIncomePage = () => {
     column,
     form,
     categories,
+    refFormIncome,
     handleEdit,
     handleDelete,
     onReset,

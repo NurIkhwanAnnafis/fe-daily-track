@@ -1,8 +1,8 @@
+import type { Dayjs } from "dayjs"
 import type { CommonParams, CommonResponseList } from "../../types/common"
 
 export type Expense = {
   id: string
-  name: string
   description: string | null
   category: {
     id: string
@@ -25,15 +25,23 @@ export type GetExpensesResponse = CommonResponseList<Expense>
 export type ExpenseDetail = {
   id: string
   merchant_name: string
-  description: string | null
+  amount: number
+  date: string
+  description: string
+  created_at: string
+  updated_at: any
+  type: {
+    id: number
+    name: string
+  }
+  status: {
+    id: number
+    name: string
+  }
   category: {
     id: string
     name: string
-  } | null
-  amount: number
-  date: string
-  created_at: string
-  updated_at: string | null
+  }
 }
 
 export type CreateExpenseResponse = {
@@ -59,6 +67,6 @@ export type ExpenseFieldType = {
   merchant_name: string
   description?: string | null
   amount: number
-  date: string
+  date: string | Dayjs
   category_id: string
 }

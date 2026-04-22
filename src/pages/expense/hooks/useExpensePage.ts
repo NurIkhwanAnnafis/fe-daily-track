@@ -7,7 +7,7 @@ import type { Expense, ExpenseFilter } from "../expense.type"
 import type { CommonOptions, CommonResponseList } from "../../../types/common"
 import { defaultResponseList } from "../../../constants/common"
 import { runEffectSafe } from "../../../lib/runtime"
-import { getExpenses } from "../expense.service"
+import { deleteExpense, getExpenses } from "../expense.service"
 import { getCategories } from "../../category/category.service"
 import { createParams } from "../../../utils/params"
 import { message } from "antd"
@@ -93,8 +93,15 @@ export const useExpensePage = () => {
     refFormExpense.current?.fetchDetail(record.id)
   }
 
-  const handleDelete = (record: Expense) => {
-    console.log('Delete', record)
+  const handleDelete = async (record: Expense) => {
+    setLoading(true)
+    const result = await runEffectSafe(deleteExpense(record.id))
+    setLoading(false)
+
+    if (!result.success) return message.error('Failed to delete expense')
+
+    message.success('Expense deleted successfully')
+    fetchExpenses()
   }
 
   const column = createColumns({ handleEdit, handleDelete })

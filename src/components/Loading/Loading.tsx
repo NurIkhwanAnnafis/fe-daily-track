@@ -5,7 +5,7 @@ import { LoadingOutlined } from "@ant-design/icons"
 const Loading: React.FC = () => {
   return (
     <div
-      className="bg-neutral-900/80 fixed left-0 top-0 z-50 h-full w-full text-neutral-900"
+      className="bg-neutral-900/80 fixed left-0 top-0 z-1050 h-full w-full text-neutral-900"
     >
       <div
         className="bg-white my-[5%] mx-auto w-64 px-2 py-5 text-center rounded"

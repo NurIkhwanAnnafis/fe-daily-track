@@ -1,10 +1,10 @@
-import type { ExpenseFieldType } from "../expense.type"
+import type { IncomeFieldType } from "../income.type"
 import { useForm } from "antd/es/form/Form"
 import { runEffectSafe } from "../../../lib/runtime"
-import { createExpense, getExpenseDetail, updateExpense } from "../expense.service"
 import { message } from "antd"
 import { useModal } from "../../../hooks/useModal"
 import { useState } from "react"
+import { createIncome, getIncomeDetail, updateIncome } from "../income.service"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import dayjs from "dayjs"
 
@@ -12,9 +12,9 @@ type Props = {
   onSuccess: () => void | Promise<unknown>
 }
 
-export const useFormExpense = ({ onSuccess }: Props) => {
+export const useFormIncome = ({ onSuccess }: Props) => {
   const modal = useModal()
-  const [form] = useForm<ExpenseFieldType>()
+  const [form] = useForm<IncomeFieldType>()
   const [id, setId] = useState<string | null>(null)
   const { setLoading } = useBlockLoading()
 
@@ -26,10 +26,10 @@ export const useFormExpense = ({ onSuccess }: Props) => {
     form.resetFields()
   }
 
-  const onSubmit = async (values: ExpenseFieldType) => {
+  const onSubmit = async (values: IncomeFieldType) => {
     setLoading(true)
     const result = await runEffectSafe(
-      id ? updateExpense(id, values) : createExpense(values)
+      id ? updateIncome(id, values) : createIncome(values)
     )
     setLoading(false)
 
@@ -52,11 +52,11 @@ export const useFormExpense = ({ onSuccess }: Props) => {
 
   const fetchDetail = async (id: string) => {
     setLoading(true)
-    const result = await runEffectSafe(getExpenseDetail(id))
+    const result = await runEffectSafe(getIncomeDetail(id))
     setLoading(false)
 
     if (!result.success) {
-      message.error('Failed to fetch expense')
+      message.error('Failed to fetch income')
       return
     }
 
@@ -65,7 +65,7 @@ export const useFormExpense = ({ onSuccess }: Props) => {
       description: result.data.description,
       amount: result.data.amount,
       date: dayjs(result.data.date),
-      category_id: result.data.category.id,
+      category_id: result.data.category?.id,
     })
     modal.setModal({
       open: true,
