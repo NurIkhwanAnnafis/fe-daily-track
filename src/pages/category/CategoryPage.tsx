@@ -81,11 +81,9 @@ const CategoryPage = () => {
       </Filter.Root>
 
       <DataGrid<Category>
-        gutter={[16, 16]}
-        span={4}
         component={(item) => (
           <Card
-            className="w-full border-2! h-50"
+            className="order-2! h-50 w-full"
             classNames={{
               body: 'flex justify-between flex-col h-full'
             }}

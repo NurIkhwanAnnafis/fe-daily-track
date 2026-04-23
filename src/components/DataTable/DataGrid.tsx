@@ -1,8 +1,9 @@
-import { Row, Col, Pagination, Card } from "antd"
+import { Pagination, Card } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
-import type { Gutter } from "antd/es/grid/row"
+import { cx } from "../../utils/cx"
 
 interface DataGridProps<T> {
+  className?: string
   meta: {
     total: number
     page: number
@@ -10,8 +11,6 @@ interface DataGridProps<T> {
   }
   component: (item: T) => React.ReactNode
   componentClassName?: string
-  gutter?: Gutter | [Gutter, Gutter]
-  span?: number
   dataSource: T[]
   createText?: string
   onCreate: () => void
@@ -20,10 +19,9 @@ interface DataGridProps<T> {
 
 const DataGrid = <T,>(props: DataGridProps<T>) => {
   const {
+    className,
     dataSource,
     meta,
-    gutter = 24,
-    span = 6,
     createText = 'Add New',
     componentClassName,
     component,
@@ -32,15 +30,16 @@ const DataGrid = <T,>(props: DataGridProps<T>) => {
   } = props
   return (
     <div className="w-full h-full flex flex-col justify-between gap-3">
-      <Row gutter={gutter}>
-        {dataSource.map((item, index) => (
-          <Col span={span} key={index}>
-            {component(item)}
-          </Col>
-        ))}
-        <Col span={span} onClick={onCreate} className="cursor-pointer">
+      <div className="overflow-hidden">
+        <div className={cx(className, 'grid grid-cols-5 gap-6')}>
+          {dataSource.map((item, index) => (
+            <div key={index}>
+              {component(item)}
+            </div>
+          ))}
           <Card
-            className={`w-full flex items-center justify-center  bg-transparent! border-dashed! border-2! border-neutral-300! ${componentClassName}`}
+            className={cx("cursor-pointer w-full flex items-center justify-center  bg-transparent! border-dashed! border-2! border-neutral-300!", componentClassName)}
+            onClick={onCreate}
           >
             <div className="flex flex-col gap-2 items-center justify-center ">
               <div className="h-12 w-12 flex items-center justify-center border-2 border-neutral-300 border-dashed rounded-full">
@@ -51,8 +50,8 @@ const DataGrid = <T,>(props: DataGridProps<T>) => {
               </p>
             </div>
           </Card>
-        </Col>
-      </Row>
+        </div>
+      </div>
 
       <Pagination
         total={meta.total}

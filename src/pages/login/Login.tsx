@@ -14,7 +14,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="w-full h-full flex items-center justify-center">
-      <div className="w-1/4 rounded-xl overflow-hidden shadow-lg">
+      <div className="xl:w-1/4 lg:mx-0 mx-3 rounded-xl overflow-hidden shadow-lg">
         {/* Green top bar */}
         <div className="h-3 bg-[#62d163]" />
         {/* White content */}

@@ -1,7 +1,7 @@
 
-import { Layout, Menu, theme } from 'antd';
+import { Button, Drawer, Layout, Menu, theme } from 'antd';
 import type { MenuItemType } from 'antd/es/menu/interface';
-import { WalletOutlined } from "@ant-design/icons"
+import { MenuUnfoldOutlined, WalletOutlined } from "@ant-design/icons"
 import { createMenu } from '../../constants/menu';
 import { useNavigate } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
@@ -30,13 +30,21 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const [selectedKeys, setSelectedKeys] = useState<string[]>(['/dashboard'])
+  const [collapsed, setCollapsed] = useState(false)
+
   const navigate = useNavigate()
   const menuItems = useMemo(() => createMenu(navigate), [navigate])
   const currentMenu = menuItems?.find(x => x?.key === selectedKeys[0]) as MenuItemType | undefined
 
   return (
     <Layout hasSider>
-      <Sider style={siderStyle}>
+      <Drawer
+        placement='left'
+        closable={false}
+        onClose={() => setCollapsed(false)}
+        open={collapsed}
+        key='left'
+      >
         <div className="m-6 flex gap-2 text-[#62d163]">
           <WalletOutlined className="text-5xl" />
           <div className="flex flex-col">
@@ -48,14 +56,41 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           mode="inline"
           defaultSelectedKeys={selectedKeys}
           items={menuItems}
-          onClick={({ key }) => setSelectedKeys([key])}
+          onClick={({ key }) => {
+            setSelectedKeys([key])
+            setCollapsed(false)
+          }}
+        />
+      </Drawer>
+      <Sider style={siderStyle} className="max-lg:hidden">
+        <div className="m-6 flex gap-2 text-[#62d163]">
+          <WalletOutlined className="text-5xl" />
+          <div className="flex flex-col">
+            <p className="text-lg font-semibold text-neutral-950">FinTrack</p>
+            <p className="text-xs text-neutral-500">Expense Tracker</p>
+          </div>
+        </div>
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={selectedKeys}
+          items={menuItems}
+          onClick={({ key }) => {
+            setSelectedKeys([key])
+            if (collapsed) setCollapsed(false)
+          }}
         />
       </Sider>
       <Layout>
         <Header
           style={{ background: colorBgContainer }}
-          className='pl-6! pr-6! pt-4! pb-4! border-b-2! border-[#f0f0f0]!'
+          className='pl-6! pr-6! pt-4! pb-4! border-b-2! border-[#f0f0f0]! flex items-center'
         >
+          <Button
+            variant='text'
+            icon={<MenuUnfoldOutlined />}
+            onClick={() => setCollapsed(!collapsed)}
+            className='lg:hidden! mr-3'
+          />
           <h3 className='text-2xl font-semibold'>{currentMenu?.title}</h3>
         </Header>
         <Content className='mt-6 mx-4' style={{ overflow: 'initial' }}>
