@@ -1,6 +1,7 @@
 import { Pagination, Card } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { cx } from "../../utils/cx"
+import { useScreen } from "../../utils/screen"
 
 interface DataGridProps<T> {
   className?: string
@@ -28,10 +29,20 @@ const DataGrid = <T,>(props: DataGridProps<T>) => {
     onChangePagination,
     onCreate,
   } = props
+
+  const { isMobile, isTablet, isDesktop } = useScreen()
+
   return (
     <div className="w-full h-full flex flex-col justify-between gap-3">
       <div className="overflow-hidden">
-        <div className={cx(className, 'grid grid-cols-5 gap-6')}>
+        <div className={cx(
+          className,
+          {
+            'grid grid-cols-2 gap-6': isMobile,
+            'grid grid-cols-3 gap-6': isTablet,
+            'grid grid-cols-5 gap-6': isDesktop,
+          }
+        )}>
           {dataSource.map((item, index) => (
             <div key={index}>
               {component(item)}

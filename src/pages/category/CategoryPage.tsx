@@ -65,7 +65,7 @@ const CategoryPage = () => {
       />
 
       <Filter.Root<CategoryFilter> onSubmit={onSubmit} form={form}>
-        <Filter.Container>
+        <Filter.Container className="grid lg:grid-cols-2! sm:grid-cols-1! gap-4">
           <div className="flex gap-2 w-full">
             {renderSchema()}
           </div>
