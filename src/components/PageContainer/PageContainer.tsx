@@ -14,7 +14,7 @@ const PageContainer: React.FC<Props> = (props) => {
 
   return (
     <div className="w-full h-full flex flex-col gap-3">
-      <div className="flex justify-between items-center">
+      <div className="flex max-sm:flex-col max-sm:items-start max-sm:gap-2 justify-between items-center">
         <h2 className="text-lg text-[#64748B]">{description}</h2>
         {onCreate && (
           <Button

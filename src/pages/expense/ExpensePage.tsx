@@ -1,8 +1,9 @@
 import DataTable from "../../components/DataTable/DataTable"
+import { ExpandedRowRender } from "../../components/DataTable/ExpandedRowRender"
 import { Filter } from "../../components/Filter/Filter"
 import PageContainer from "../../components/PageContainer/PageContainer"
 import FormExpense from "./component/FormExpense"
-import type { ExpenseFilter } from "./expense.type"
+import type { Expense, ExpenseFilter } from "./expense.type"
 import { useExpensePage } from "./hooks/useExpensePage"
 
 const ExpensePage = () => {
@@ -33,8 +34,8 @@ const ExpensePage = () => {
       />
 
       <Filter.Root<ExpenseFilter> onSubmit={onSubmit} form={form}>
-        <Filter.Container className="">
-          <div className="grid grid-cols-4 gap-4">
+        <Filter.Container className="max-lg:grid lg:grid-cols-2! sm:grid-cols-1! lg:gap-4">
+          <div className="grid md:grid-cols-3! grid-cols-1 gap-4 mb-4">
             {renderSchema()}
           </div>
           <div className="flex justify-end gap-2 items-end h-full">
@@ -57,6 +58,7 @@ const ExpensePage = () => {
           pageSize: datasource.meta.page_size,
         }}
         onChangePagination={onChangePagination}
+        expandedRowRender={(record) => ExpandedRowRender<Expense>({ column, record })}
       />
     </PageContainer>
   )

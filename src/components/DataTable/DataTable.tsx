@@ -1,6 +1,7 @@
 import { Pagination, Table } from "antd"
 import type { TableProps } from "antd"
-import { useScreen } from "../../utils/screen"
+import { useContext } from "react"
+import { LayoutContext } from "../../provider/layout.context"
 
 interface DataTableProps<T> extends TableProps<T> {
   meta: {
@@ -15,7 +16,7 @@ interface DataTableProps<T> extends TableProps<T> {
 const DataTable = <T,>({ columns, dataSource, meta, onChangePagination, expandedRowRender, ...restProps }: DataTableProps<T>) => {
   const {
     isMobile
-  } = useScreen()
+  } = useContext(LayoutContext)
 
   return (
     <div className="w-full h-full flex flex-col justify-between gap-3">

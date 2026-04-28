@@ -1,7 +1,8 @@
 import { Pagination, Card } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { cx } from "../../utils/cx"
-import { useScreen } from "../../utils/screen"
+import { useContext } from "react"
+import { LayoutContext } from "../../provider/layout.context"
 
 interface DataGridProps<T> {
   className?: string
@@ -30,7 +31,7 @@ const DataGrid = <T,>(props: DataGridProps<T>) => {
     onCreate,
   } = props
 
-  const { isMobile, isTablet, isDesktop } = useScreen()
+  const { isMobile, isTablet, isDesktop } = useContext(LayoutContext)
 
   return (
     <div className="w-full h-full flex flex-col justify-between gap-3">

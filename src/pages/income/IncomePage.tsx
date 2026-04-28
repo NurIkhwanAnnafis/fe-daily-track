@@ -4,12 +4,7 @@ import PageContainer from "../../components/PageContainer/PageContainer"
 import type { Income, IncomeFilter } from "./income.type"
 import { useIncomePage } from "./hooks/useIncomePage"
 import FormIncome from "./component/FormIncome"
-
-const resolveValue = (value: Income[keyof Income]): React.ReactNode => {
-  if (value === null || value === undefined) return null
-  if (typeof value === 'object' && 'name' in value) return value.name
-  return value as React.ReactNode
-}
+import { ExpandedRowRender } from "../../components/DataTable/ExpandedRowRender"
 
 const IncomePage = () => {
   const {
@@ -25,23 +20,6 @@ const IncomePage = () => {
     onChangePagination,
     fetchIncomes,
   } = useIncomePage()
-
-  const expandedRowRender = (record: Income) => {
-    return (
-      <div className="flex flex-col gap-1 px-2 py-1">
-        {column?.map((item, index) =>
-          item.responsive ? (
-            <div className="flex gap-2" key={`expandable-item-${index}`}>
-              <span className="font-semibold">
-                {typeof item.title === 'function' ? item.title({}) : item.title}:
-              </span>
-              {item.key ? resolveValue(record[item.key as keyof Income]) : null}
-            </div>
-          ) : null
-        )}
-      </div>
-    )
-  }
 
   return (
     <PageContainer
@@ -80,7 +58,7 @@ const IncomePage = () => {
           pageSize: datasource.meta.page_size,
         }}
         onChangePagination={onChangePagination}
-        expandedRowRender={expandedRowRender}
+        expandedRowRender={(record) => ExpandedRowRender<Income>({ column, record })}
       />
     </PageContainer>
   )

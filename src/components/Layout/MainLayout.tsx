@@ -5,6 +5,8 @@ import { MenuUnfoldOutlined, WalletOutlined } from "@ant-design/icons"
 import { createMenu } from '../../constants/menu';
 import { useNavigate } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
+import LayoutProvider from '../../provider/layout.context';
+import { useScreen } from '../../utils/screen';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -29,6 +31,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const screen = useScreen()
+
   const [selectedKeys, setSelectedKeys] = useState<string[]>(['/dashboard'])
   const [collapsed, setCollapsed] = useState(false)
 
@@ -94,7 +98,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           <h3 className='text-2xl font-semibold'>{currentMenu?.title}</h3>
         </Header>
         <Content className='mt-6 mx-4' style={{ overflow: 'initial' }}>
-          {children}
+          <LayoutProvider {...screen}>
+            {children}
+          </LayoutProvider>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
           Ikhwan ©{new Date().getFullYear()} Designed by Ant Design

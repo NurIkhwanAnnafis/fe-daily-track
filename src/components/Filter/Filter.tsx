@@ -1,6 +1,7 @@
-import { createContext } from "react"
-import { Button, Card, Form, type FormInstance } from "antd"
-import { ReloadOutlined } from "@ant-design/icons"
+import { createContext, useContext, useState } from "react"
+import { Button, Card, Drawer, Form, type FormInstance } from "antd"
+import { FilterFilled, ReloadOutlined } from "@ant-design/icons"
+import { LayoutContext } from "../../provider/layout.context"
 
 type FilterContextType<T> = {
   form: FormInstance<T>
@@ -65,23 +66,57 @@ type FilterRootProps<T> = {
   form: FormInstance<T>
 }
 const FilterRoot = <T,>({ children, onSubmit, form }: FilterRootProps<T>) => {
+  const {
+    isMobile
+  } = useContext(LayoutContext)
+  const [open, setOpen] = useState(false)
 
   return (
     <FilterContext.Provider
       value={{ form }}
     >
       <div className="relative">
-        <Card className="border-2! p-5 bg-white space-y-4">
-          <Form
-            form={form}
-            onFinish={onSubmit}
-            name="form-filter"
-            autoComplete="off"
-            layout="vertical"
+        {!isMobile ? (
+          <Card className="border-2! p-5 bg-white space-y-4">
+            <Form
+              form={form}
+              onFinish={onSubmit}
+              name="form-filter"
+              autoComplete="off"
+              layout="vertical"
+            >
+              {children}
+            </Form>
+          </Card>
+        ) : (
+          <Drawer
+            open={open}
+            onClose={() => setOpen(false)}
+            placement="bottom"
+            title={null}
+            closeIcon={null}
           >
-            {children}
-          </Form>
-        </Card>
+            <Form
+              form={form}
+              onFinish={onSubmit}
+              name="form-filter"
+              autoComplete="off"
+              layout="vertical"
+            >
+              {children}
+            </Form>
+          </Drawer>
+        )}
+      </div>
+      <div className="sm:hidden fixed bottom-5 right-5 z-1060">
+        <Button
+          shape="circle"
+          type="primary"
+          icon={<FilterFilled />}
+          variant="text"
+          className="min-w-12! min-h-12! ring-4! ring-white"
+          onClick={() => setOpen(true)}
+        />
       </div>
     </FilterContext.Provider>
   )

@@ -25,18 +25,21 @@ export const createColumns = ({ handleEdit, handleDelete }: Props): ColumnsType<
     title: "Description",
     dataIndex: "description",
     key: "description",
+    responsive: ['md']
   },
   {
     title: "Category",
     dataIndex: "category",
     key: "category",
     render: (_, record) => record.category?.name,
+    responsive: ['md']
   },
   {
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
     render: (_, record) => numberFormatter(record.amount, 'id-ID'),
+    responsive: ['md']
   },
   {
     title: "Actions",
@@ -51,5 +54,6 @@ export const createColumns = ({ handleEdit, handleDelete }: Props): ColumnsType<
         descriptionDelete={`Are you sure to delete this expense?`}
       />
     ),
+    responsive: ['md']
   },
 ]
