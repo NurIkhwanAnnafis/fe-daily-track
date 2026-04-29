@@ -9,11 +9,15 @@ export type LoginPayload = {
   password: string
 }
 
+export type LogoutPayload = {
+  refresh_token: string
+}
+
 export type LoginResponse = {
-  success: boolean
   message: string
   data: {
-    accessToken: string
-    refreshToken: string
+    access_token: string
+    refresh_token: string
+    user_id: string
   }
 }

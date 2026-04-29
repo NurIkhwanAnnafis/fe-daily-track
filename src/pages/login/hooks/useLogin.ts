@@ -27,11 +27,9 @@ export const useLogin = () => {
 
     // API only returns tokens; use form values for user info
     setUserLocalStorage({
-      id: 1,
-      email: values.email,
-      name: values.email,
-      avatar: null,
-      token: result.data.data.accessToken,
+      token: result.data.data.access_token,
+      refresh_token: result.data.data.refresh_token,
+      user_id: result.data.data.user_id,
     })
 
     message.success('Login success')

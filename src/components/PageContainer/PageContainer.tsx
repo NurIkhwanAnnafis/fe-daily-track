@@ -16,16 +16,18 @@ const PageContainer: React.FC<Props> = (props) => {
     <div className="w-full h-full flex flex-col gap-3">
       <div className="flex max-sm:flex-col max-sm:items-start max-sm:gap-2 justify-between items-center">
         <h2 className="text-lg text-[#64748B]">{description}</h2>
-        {onCreate && (
-          <Button
-            htmlType="button"
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={onCreate}
-          >
-            <span className="font-semibold">{`Add ${title}`}</span>
-          </Button>
-        )}
+        <div className="sm:float-right">
+          {onCreate && (
+            <Button
+              htmlType="button"
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={onCreate}
+            >
+              <span className="font-semibold">{`Add ${title}`}</span>
+            </Button>
+          )}
+        </div>
       </div>
 
       {children}

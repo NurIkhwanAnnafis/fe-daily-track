@@ -1,12 +1,8 @@
 
-import { Button, Drawer, Layout, Menu, theme } from 'antd';
-import type { MenuItemType } from 'antd/es/menu/interface';
-import { MenuUnfoldOutlined, WalletOutlined } from "@ant-design/icons"
-import { createMenu } from '../../constants/menu';
-import { useNavigate } from '@tanstack/react-router';
-import { useMemo, useState } from 'react';
+import { Button, Drawer, Dropdown, Layout, Menu } from 'antd';
+import { MenuUnfoldOutlined, UserOutlined, WalletOutlined } from "@ant-design/icons"
 import LayoutProvider from '../../provider/layout.context';
-import { useScreen } from '../../utils/screen';
+import { useMainLayout } from './hooks/useMainLayout';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -29,19 +25,21 @@ type MainLayoutProps = {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-  const screen = useScreen()
-
-  const [selectedKeys, setSelectedKeys] = useState<string[]>(['/dashboard'])
-  const [collapsed, setCollapsed] = useState(false)
-
-  const navigate = useNavigate()
-  const menuItems = useMemo(() => createMenu(navigate), [navigate])
-  const currentMenu = menuItems?.find(x => x?.key === selectedKeys[0]) as MenuItemType | undefined
+    colorBgContainer,
+    screen,
+    profile,
+    selectedKeys,
+    collapsed,
+    menuItems,
+    currentMenu,
+    profileMenuItems,
+    setCollapsed,
+    setSelectedKeys,
+    handleClickItems,
+  } = useMainLayout()
 
   return (
-    <Layout hasSider>
+    <Layout hasSider className='min-h-full!'>
       <Drawer
         placement='left'
         closable={false}
@@ -96,6 +94,13 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             className='lg:hidden! mr-3'
           />
           <h3 className='text-2xl font-semibold'>{currentMenu?.title}</h3>
+          {!screen.isMobile && (
+            <Dropdown menu={{ items: profileMenuItems, onClick: handleClickItems }} trigger={['click']}>
+              <Button icon={<UserOutlined />} className='ml-auto!' type='text' iconPlacement='end'>
+                {profile?.email}
+              </Button>
+            </Dropdown>
+          )}
         </Header>
         <Content className='mt-6 mx-4' style={{ overflow: 'initial' }}>
           <LayoutProvider {...screen}>

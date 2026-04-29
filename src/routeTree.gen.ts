@@ -10,16 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ReportIndexRouteImport } from './routes/report/index'
+import { Route as ProfileIndexRouteImport } from './routes/profile/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as IncomeIndexRouteImport } from './routes/income/index'
 import { Route as ExpenseIndexRouteImport } from './routes/expense/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as CategoryIndexRouteImport } from './routes/category/index'
-import { Route as ReportIndexRouteImport } from './routes/report/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportIndexRoute = ReportIndexRouteImport.update({
+  id: '/report/',
+  path: '/report/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileIndexRoute = ProfileIndexRouteImport.update({
+  id: '/profile/',
+  path: '/profile/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginIndexRoute = LoginIndexRouteImport.update({
@@ -47,11 +58,6 @@ const CategoryIndexRoute = CategoryIndexRouteImport.update({
   path: '/category/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ReportIndexRoute = ReportIndexRouteImport.update({
-  id: '/report',
-  path: '/report',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,7 +66,8 @@ export interface FileRoutesByFullPath {
   '/expense/': typeof ExpenseIndexRoute
   '/income/': typeof IncomeIndexRoute
   '/login/': typeof LoginIndexRoute
-  '/report': typeof ReportIndexRoute
+  '/profile/': typeof ProfileIndexRoute
+  '/report/': typeof ReportIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/expense': typeof ExpenseIndexRoute
   '/income': typeof IncomeIndexRoute
   '/login': typeof LoginIndexRoute
+  '/profile': typeof ProfileIndexRoute
   '/report': typeof ReportIndexRoute
 }
 export interface FileRoutesById {
@@ -79,29 +87,40 @@ export interface FileRoutesById {
   '/expense/': typeof ExpenseIndexRoute
   '/income/': typeof IncomeIndexRoute
   '/login/': typeof LoginIndexRoute
-  '/report': typeof ReportIndexRoute
+  '/profile/': typeof ProfileIndexRoute
+  '/report/': typeof ReportIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-  | '/'
-  | '/category/'
-  | '/dashboard/'
-  | '/expense/'
-  | '/income/'
-  | '/login/'
-  | '/report'
+    | '/'
+    | '/category/'
+    | '/dashboard/'
+    | '/expense/'
+    | '/income/'
+    | '/login/'
+    | '/profile/'
+    | '/report/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/category' | '/dashboard' | '/expense' | '/income' | '/login' | '/report'
+  to:
+    | '/'
+    | '/category'
+    | '/dashboard'
+    | '/expense'
+    | '/income'
+    | '/login'
+    | '/profile'
+    | '/report'
   id:
-  | '__root__'
-  | '/'
-  | '/category/'
-  | '/dashboard/'
-  | '/expense/'
-  | '/income/'
-  | '/login/'
-  | '/report'
+    | '__root__'
+    | '/'
+    | '/category/'
+    | '/dashboard/'
+    | '/expense/'
+    | '/income/'
+    | '/login/'
+    | '/profile/'
+    | '/report/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -111,6 +130,7 @@ export interface RootRouteChildren {
   ExpenseIndexRoute: typeof ExpenseIndexRoute
   IncomeIndexRoute: typeof IncomeIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
+  ProfileIndexRoute: typeof ProfileIndexRoute
   ReportIndexRoute: typeof ReportIndexRoute
 }
 
@@ -121,6 +141,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report/': {
+      id: '/report/'
+      path: '/report'
+      fullPath: '/report/'
+      preLoaderRoute: typeof ReportIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile/': {
+      id: '/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof ProfileIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login/': {
@@ -158,13 +192,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CategoryIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/report': {
-      id: '/report'
-      path: '/report'
-      fullPath: '/report'
-      preLoaderRoute: typeof ReportIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -175,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExpenseIndexRoute: ExpenseIndexRoute,
   IncomeIndexRoute: IncomeIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
+  ProfileIndexRoute: ProfileIndexRoute,
   ReportIndexRoute: ReportIndexRoute,
 }
 export const routeTree = rootRouteImport
