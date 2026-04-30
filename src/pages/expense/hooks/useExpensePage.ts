@@ -8,13 +8,13 @@ import type { CommonOptions, CommonResponseList } from "../../../types/common"
 import { defaultResponseList } from "../../../constants/common"
 import { runEffectSafe } from "../../../lib/runtime"
 import { deleteExpense, getExpenses } from "../expense.service"
-import { getCategories } from "../../category/category.service"
 import { createParams } from "../../../utils/params"
 import { message } from "antd"
 import { capitalizeFirstLetter } from "../../../utils/string"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import { TRANSACTION_TYPE } from "../../../constants/transaction"
 import type { FormExpenseRef } from "../component/FormExpense"
+import { getCategories } from "../../../services/category.service"
 
 export const useExpensePage = () => {
   const [categories, setCategories] = useState<CommonOptions>([])
@@ -61,7 +61,7 @@ export const useExpensePage = () => {
 
   const fetchCategories = async () => {
     const result = await runEffectSafe(
-      getCategories({ page: '1', limit: '100', search: '' })
+      getCategories({ page: '1', limit: '100', search: '', type_ids: TRANSACTION_TYPE.EXPENSE })
     )
 
     if (!result.success) return

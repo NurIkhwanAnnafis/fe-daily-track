@@ -6,12 +6,13 @@ import type { Category, CategoryFilter } from "../category.type"
 import type { CommonOptions, CommonResponseList } from "../../../types/common"
 import { defaultResponseList } from "../../../constants/common"
 import { runEffectSafe } from "../../../lib/runtime"
-import { deleteCategory, getCategories, getCategoryType } from "../category.service"
+import { deleteCategory, getCategoryType } from "../category.service"
 import { createParams } from "../../../utils/params"
 import { message } from "antd"
 import { capitalizeFirstLetter } from "../../../utils/string"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import type { FormCategoryRef } from "../component/FormCategory"
+import { getCategories } from "../../../services/category.service"
 
 export const useCategoryPage = () => {
   const refFormCategory = useRef<FormCategoryRef>(null)

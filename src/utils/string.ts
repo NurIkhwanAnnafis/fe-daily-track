@@ -10,3 +10,13 @@ export const capitalizeFirstLetter = (str: string) => {
   // Concatenate them
   return firstLetter + restOfString;
 };
+
+export const bigString = (str: string | null, length: number = 100) => {
+  if (!str || typeof str !== 'string') {
+    return str;
+  }
+
+  if (str.length > length) return str.substring(0, length - 3) + '...';
+
+  return str;
+};

@@ -3,6 +3,8 @@ import type { ColumnsType } from "antd/es/table"
 import type { Expense } from "./expense.type"
 import ColumnAction from "../../components/DataTable/ColumnAction"
 import { numberFormatter } from "../../utils/number"
+import { bigString } from "../../utils/string"
+import { Tooltip } from "antd"
 
 type Props = {
   handleEdit: (record: Expense) => void
@@ -25,7 +27,13 @@ export const createColumns = ({ handleEdit, handleDelete }: Props): ColumnsType<
     title: "Description",
     dataIndex: "description",
     key: "description",
-    responsive: ['md']
+    render: (_, record) => (
+      <Tooltip title={record.description}>
+        {bigString(record.description)}
+      </Tooltip>
+    ),
+    responsive: ['md'],
+    width: 400,
   },
   {
     title: "Category",

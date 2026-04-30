@@ -62,3 +62,7 @@ export type IncomeFieldType = {
   date: string | Dayjs
   category_id: string
 }
+
+export type GetCategoriesParams = CommonParams & {
+  type_ids?: number
+}

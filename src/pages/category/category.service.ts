@@ -1,14 +1,9 @@
 import type { Effect } from "effect";
-import type { CategoryFieldType, CreateCategoryResponse, GetCategoriesResponse, GetCategoryByIdResponse, GetCategoryTypeResponse } from "./category.type";
+import type { CategoryFieldType, CreateCategoryResponse, GetCategoryByIdResponse, GetCategoryTypeResponse } from "./category.type";
 import type { HttpError } from "../../lib/http";
 import type { HttpClient } from "@effect/platform";
 import http from "../../lib/http";
 import type { CommonParams } from "../../types/common";
-
-export const getCategories = (
-  params: CommonParams
-): Effect.Effect<GetCategoriesResponse, HttpError, HttpClient.HttpClient> =>
-  http.get('/categories', { params })
 
 export const getCategoryType = (
   params: CommonParams

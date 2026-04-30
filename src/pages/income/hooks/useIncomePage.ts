@@ -8,13 +8,13 @@ import type { CommonOptions, CommonResponseList } from "../../../types/common"
 import { defaultResponseList } from "../../../constants/common"
 import { runEffectSafe } from "../../../lib/runtime"
 import { deleteIncome, getIncomes } from "../income.service"
-import { getCategories } from "../../category/category.service"
 import { createParams } from "../../../utils/params"
 import { message } from "antd"
 import { capitalizeFirstLetter } from "../../../utils/string"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import { TRANSACTION_TYPE } from "../../../constants/transaction"
 import type { FormIncomeRef } from "../component/FormIncome"
+import { getCategories } from "../../../services/category.service"
 
 export const useIncomePage = () => {
   const [categories, setCategories] = useState<CommonOptions>([])
@@ -61,7 +61,7 @@ export const useIncomePage = () => {
 
   const fetchCategories = async () => {
     const result = await runEffectSafe(
-      getCategories({ page: '1', limit: '100', search: '' })
+      getCategories({ page: '1', limit: '100', search: '', type_ids: TRANSACTION_TYPE.INCOME })
     )
 
     if (!result.success) return

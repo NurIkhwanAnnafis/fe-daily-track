@@ -35,8 +35,6 @@ export type CategoryFilter = {
   name: string
 }
 
-export type GetCategoriesResponse = CommonResponseList<Category>
-
 export type GetCategoryTypeResponse = CommonResponseList<CategoryType>
 
 export type GetCategoryByIdResponse = CategoryDetail
