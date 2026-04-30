@@ -33,7 +33,7 @@ const ProfilePage: React.FC = () => {
   return (
     <div className="min-h-screen pb-10">
       {/* Banner */}
-      <div className="h-12 sm:h-36 md:h-44 w-full relative" />
+      <div className="h-12 sm:h-20 md:h-28 w-full relative" />
 
       {/* Avatar + Name */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
