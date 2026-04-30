@@ -108,7 +108,7 @@ const FilterRoot = <T,>({ children, onSubmit, form }: FilterRootProps<T>) => {
           </Drawer>
         )}
       </div>
-      <div className="sm:hidden fixed bottom-5 right-5 z-1060">
+      <div className="sm:hidden fixed bottom-5 right-5 z-999">
         <Button
           shape="circle"
           type="primary"

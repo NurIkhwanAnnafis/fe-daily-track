@@ -3,13 +3,15 @@ import { runEffectSafe } from "../lib/runtime"
 import { getUserById } from "../services/user.service"
 import { useBlockLoading } from "../store/useBlockLoading.store"
 import { getUserLocalStorage, setUserLocalStorage } from "../utils/localstorage"
+import { message } from "antd"
 
 type Props = {
   enabled?: boolean
+  showError?: boolean
 }
 
 export const useProfile = (props: Props) => {
-  const { enabled = false } = props
+  const { enabled = false, showError = false } = props
   const { setLoading } = useBlockLoading()
   const currentData = getUserLocalStorage()
 
@@ -26,6 +28,7 @@ export const useProfile = (props: Props) => {
 
     if (!result.success) {
       console.error(result.error)
+      if (showError) message.error(result.error.message)
       return
     }
 

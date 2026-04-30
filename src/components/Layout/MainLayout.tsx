@@ -1,5 +1,5 @@
 
-import { Button, Drawer, Dropdown, Layout, Menu } from 'antd';
+import { Avatar, Button, Drawer, Dropdown, Layout, Menu } from 'antd';
 import { MenuUnfoldOutlined, UserOutlined, WalletOutlined } from "@ant-design/icons"
 import LayoutProvider from '../../provider/layout.context';
 import { useMainLayout } from './hooks/useMainLayout';
@@ -63,6 +63,14 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
             setCollapsed(false)
           }}
         />
+        <div className='absolute bottom-6 mx-6'>
+          <Dropdown menu={{ items: profileMenuItems, onClick: handleClickItems }} trigger={['click']}>
+            <div className='flex gap-2 items-center cursor-pointer'>
+              <Avatar size={32} icon={<UserOutlined />} />
+              <span className='font-medium'>{profile?.email}</span>
+            </div>
+          </Dropdown>
+        </div>
       </Drawer>
       <Sider style={siderStyle} className="max-lg:hidden">
         <div className="m-6 flex gap-2 text-[#62d163]">
