@@ -67,7 +67,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           <Dropdown menu={{ items: profileMenuItems, onClick: handleClickItems }} trigger={['click']}>
             <div className='flex gap-2 items-center cursor-pointer'>
               <Avatar size={32} icon={<UserOutlined />} />
-              <span className='font-medium'>{profile?.email}</span>
+              <span className='font-medium'>{profile?.first_name}</span>
             </div>
           </Dropdown>
         </div>
@@ -105,7 +105,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
           {!screen.isMobile && (
             <Dropdown menu={{ items: profileMenuItems, onClick: handleClickItems }} trigger={['click']}>
               <Button icon={<UserOutlined />} className='ml-auto!' type='text' iconPlacement='end'>
-                {profile?.email}
+                {profile?.first_name}
               </Button>
             </Dropdown>
           )}

@@ -2,33 +2,26 @@ import React from 'react'
 import { useProfile } from '../../hooks/useProfile'
 import {
   UserOutlined,
-  MailOutlined,
-  SafetyCertificateOutlined,
-  BankOutlined,
-  CalendarOutlined,
   CheckCircleFilled,
   CloseCircleFilled,
-  IdcardOutlined,
 } from '@ant-design/icons'
-import { Avatar, Tag, Card } from 'antd'
-import InfoRow from './component/InfoRow'
+import { Avatar, Tag } from 'antd'
+import CardDetail from './component/CardDetail'
+import { useProfilePage } from './hooks/useProfilePage'
 
 const ProfilePage: React.FC = () => {
-  const { profile } = useProfile({
+  const { profile, currentData } = useProfile({
     enabled: true,
     showError: true,
+    fetchUserConfig: true,
   })
 
-  const formatDate = (dateStr: string | null | undefined) => {
-    if (!dateStr) return '—'
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    })
-  }
+  const {
+    dataAccountsDetail,
+    dataFinancialLimit,
+    dataOrganization,
+    dataActivity,
+  } = useProfilePage({ profile, userConfig: currentData?.user_config })
 
   return (
     <div className="min-h-screen pb-10">
@@ -36,7 +29,7 @@ const ProfilePage: React.FC = () => {
       <div className="h-12 sm:h-20 md:h-28 w-full relative" />
 
       {/* Avatar + Name */}
-      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+      <div className="px-4 sm:px-6">
         {/* Avatar row */}
         <div className="relative -mt-10 sm:-mt-12 md:-mt-14 flex gap-3 sm:gap-5 mb-6 sm:mb-8">
           {/* Avatar */}
@@ -49,7 +42,7 @@ const ProfilePage: React.FC = () => {
           <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 flex-1 min-w-0">
             <div className="min-w-0">
               <h1 className="text-lg! sm:text-xl! font-bold text-gray-900 leading-tight truncate">
-                {profile?.email ?? 'Loading…'}
+                {profile?.first_name + ' ' + profile?.last_name}
               </h1>
               <p className="text-xs! sm:text-sm! text-gray-500 mt-0.5">
                 {profile?.organization?.name ?? '—'}
@@ -76,73 +69,34 @@ const ProfilePage: React.FC = () => {
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
+        <div className="grid grid-cols-2 gap-4">
           {/* Account Details */}
-          <Card
-            title={(
-              <div className='flex items-center gap-3'>
-                <UserOutlined />
-                <span>Account Details</span>
-              </div>
-            )}
-          >
-            <InfoRow icon={<IdcardOutlined />} label="User ID" value="XXXX-XXXX-XXXX-XXXX" />
-            <InfoRow icon={<MailOutlined />} label="Email" value={profile?.email ?? '—'} />
-            <InfoRow
-              icon={<SafetyCertificateOutlined />}
-              label="Role"
-              value={
-                profile?.role ? (
-                  <Tag color="geekblue" className="capitalize! rounded-full!">
-                    {profile.role}
-                  </Tag>
-                ) : (
-                  '—'
-                )
-              }
-            />
-          </Card>
+          <CardDetail
+            iconTitle={dataAccountsDetail.iconTitle}
+            title="Account Details"
+            data={dataAccountsDetail.data}
+          />
+
+          {/* Financial Limit */}
+          <CardDetail
+            iconTitle={dataFinancialLimit.iconTitle}
+            title="Financial Limit"
+            data={dataFinancialLimit.data}
+          />
 
           {/* Organization */}
-          <Card 
-            title={(
-              <div className='flex items-center gap-3'>
-                <BankOutlined />
-                <span>Organization</span>
-              </div>
-            )}
-          >
-            <InfoRow
-              icon={<IdcardOutlined />}
-              label="Organization ID"
-              value="XXXX-XXXX-XXXX-XXXX"
-            />
-            <InfoRow
-              icon={<BankOutlined />}
-              label="Organization Name"
-              value={profile?.organization?.name ?? '—'}
-            />
-          </Card>
+          <CardDetail
+            iconTitle={dataOrganization.iconTitle}
+            title="Organization"
+            data={dataOrganization.data}
+          />
 
-          {/* Activity — full width on all breakpoints */}
-          <div className="sm:col-span-2">
-            <Card
-              title={(<div className='flex items-center gap-3'>
-                <CalendarOutlined />
-                <span>Activity</span>
-              </div>)}      >
-              <InfoRow
-                icon={<CalendarOutlined />}
-                label="Joined"
-                value={formatDate(profile?.created_at)}
-              />
-              <InfoRow
-                icon={<CalendarOutlined />}
-                label="Last Updated"
-                value={formatDate(profile?.updated_at)}
-              />
-            </Card>
-          </div>
+          {/* Activity */}
+          <CardDetail
+            iconTitle={dataActivity.iconTitle}
+            title="Activity"
+            data={dataActivity.data}
+          />
         </div>
       </div>
     </div>

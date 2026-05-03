@@ -1,7 +1,9 @@
 import type { User } from "../types/user"
+import type { UserConfig } from "../types/user-config"
 
 type UserStorage = {
   user?: User
+  user_config?: UserConfig
   token: string
   refresh_token: string
   user_id: string

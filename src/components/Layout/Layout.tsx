@@ -34,7 +34,7 @@ const Layout = () => {
   }
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen overflow-x-auto">
       <ConfigProvider theme={tokenTheme}>
         {loading && <Loading />}
         <MainLayout>
