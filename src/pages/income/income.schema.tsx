@@ -22,11 +22,14 @@ export const schemaFilter = (props: SchemaFilterProps): FilterSchema[] => [
     options: props.categories,
   },
   {
-    type: 'date',
-    id: 'transaction_date',
+    type: 'range-date',
+    id: 'date',
     label: 'Transaction Date',
-    name: 'transaction_date',
-    placeholder: 'Select date',
+    name: 'date',
+    placeholder: {
+      start: 'Select start date',
+      end: 'Select end date',
+    },
   },
 ]
 

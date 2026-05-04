@@ -74,6 +74,19 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
               <DatePicker placeholder={item.placeholder} className="w-full" />
             </Form.Item>
           )
+        case "range-date":
+          return (
+            <Form.Item
+              key={item.id}
+              label={item.label}
+              name={item.name}
+              className="mb-0! w-full"
+            >
+              <DatePicker.RangePicker
+                placeholder={[item.placeholder.start, item.placeholder.end]}
+                className="w-full" />
+            </Form.Item>
+          )
         case "select":
           return (
             <Form.Item
@@ -103,6 +116,15 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
               const schemaItem = schema.find((item) => item.name === key)
 
               if (Array.isArray(value)) {
+                if (schemaItem?.type === 'range-date') {
+                  return (
+                    <div key={`filter-${key}`} className="font-bold">
+                      {schemaItem?.label}: {dayjs(value[0]).format('DD MMM YYYY HH:mm')} - {dayjs(value[1]).format('DD MMM YYYY HH:mm')}
+                      {index !== Object.keys(appliedFilters).length - 1 && ', '}
+                    </div>
+                  )
+                }
+
                 return (
                   <div key={`filter-${key}`} className="font-bold">
                     {schemaItem?.label}: {value.map((item) => item.label).join(', ')}
@@ -137,11 +159,8 @@ export const useFilter = <T extends Record<string, any>>(schema: UseFilter) => {
   }
 
   const onSubmit: FormProps<T>['onFinish'] = (values) => {
-    let hasValue = false, newValues: Record<string, any> = {}
+    let newValues: Record<string, any> = {}
     for (const key in values) {
-      if (values[key]) {
-        hasValue = true
-      }
       newValues[key] = values[key] || null
     }
 

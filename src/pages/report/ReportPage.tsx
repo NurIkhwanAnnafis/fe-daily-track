@@ -2,6 +2,7 @@ import DataTable from "../../components/DataTable/DataTable"
 import { ExpandedRowRender } from "../../components/DataTable/ExpandedRowRender"
 import { Filter } from "../../components/Filter/Filter"
 import PageContainer from "../../components/PageContainer/PageContainer"
+import CardTotal from "./component/CardTotal"
 import { useReportPage } from "./hooks/useReportPage"
 import { column } from "./report.constant"
 import type { Report, ReportsFilter } from "./report.type"
@@ -9,6 +10,7 @@ import type { Report, ReportsFilter } from "./report.type"
 const ReportPage = () => {
   const {
     datasource,
+    dataSummary,
     form,
     onReset,
     onSubmit,
@@ -37,6 +39,12 @@ const ReportPage = () => {
         </Filter.Container>
         {renderActiveFilter()}
       </Filter.Root>
+
+      <CardTotal
+        amount={dataSummary.amount}
+        expense={dataSummary.expense}
+        income={dataSummary.income}
+      />
 
       <DataTable
         columns={column}

@@ -7,7 +7,13 @@ export const createParams = (query: Record<string, QueryValue>) => {
     for (const key in query) {
         if (query[key] !== undefined && query[key] !== null) {
             if (Array.isArray(query[key])) {
-                newObj[key] = query[key].map((item) => item.value).join(',')
+                // case range date
+                if (dayjs(query[key][0] as any).isValid() && dayjs(query[key][1] as any).isValid()) {
+                    newObj.start_date = dayjs(query[key][0] as any).format('YYYY-MM-DD')
+                    newObj.end_date = dayjs(query[key][1] as any).format('YYYY-MM-DD')
+                } else {
+                    newObj[key] = query[key].map((item) => item.value).join(',')
+                }
             } else if (typeof query[key] === 'object') {
                 if (dayjs(query[key] as any).isValid()) {
                     newObj[key] = dayjs(query[key] as any).format('YYYY-MM-DD')

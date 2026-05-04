@@ -1,4 +1,4 @@
-import type { CommonParams, CommonResponseList } from "../../types/common"
+import type { CommonParams, CommonResponse, CommonResponseList } from "../../types/common"
 
 export type GetReportsParams = CommonParams & {
   category_id?: string
@@ -26,9 +26,16 @@ export type Report = {
   updated_at: string | null
 }
 
+export type Summary = {
+  income: number
+  expense: number
+  amount: number
+}
+
 export type ReportsFilter = {
   category_id: string | null
   date: Date
 }
 
 export type GetReportsResponse = CommonResponseList<Report>
+export type GetSummaryResponse = CommonResponse<Summary>

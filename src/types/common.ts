@@ -9,6 +9,7 @@ export type CommonResponseList<T> = {
 
 export type CommonResponse<T> = {
   data: T
+  message?: string
 }
 
 export type CommonParams = {

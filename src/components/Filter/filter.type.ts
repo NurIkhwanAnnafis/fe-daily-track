@@ -5,7 +5,7 @@ export type Option = {
   value: string
 }
 
-export type FilterSchema = FilterInputSchema | FilterDateSchema | FilterSelectSchema
+export type FilterSchema = FilterInputSchema | FilterDateSchema | FilterRangeDateSchema | FilterSelectSchema
 
 export type UseFilter = FilterSchema[]
 
@@ -25,6 +25,11 @@ export type FilterInputSchema = FilterFieldSchema & {
 
 export type FilterDateSchema = FilterFieldSchema & {
   type: "date"
+}
+
+export type FilterRangeDateSchema = Omit<FilterFieldSchema, 'placeholder'> & {
+  type: "range-date"
+  placeholder: { start: string; end: string }
 }
 
 export type FilterSelectSchema = FilterFieldSchema & {

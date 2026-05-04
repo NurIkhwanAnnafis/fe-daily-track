@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useFilter } from "../../../components/Filter/useFilter"
 import type { CommonOptions, CommonResponseList } from "../../../types/common"
 import { schemaFilter } from "../report.schema"
-import type { ReportsFilter, Report } from "../report.type"
+import type { ReportsFilter, Report, Summary } from "../report.type"
 import { runEffectSafe } from "../../../lib/runtime"
 import { getCategories } from "../../../services/category.service"
 import { capitalizeFirstLetter } from "../../../utils/string"
@@ -10,12 +10,17 @@ import { defaultResponseList } from "../../../constants/common"
 import { parseAsString, useQueryStates } from "nuqs"
 import { useBlockLoading } from "../../../store/useBlockLoading.store"
 import { createParams } from "../../../utils/params"
-import { getReports } from "../report.service"
+import { getReports, getSummary } from "../report.service"
 import { message } from "antd"
 
 export const useReportPage = () => {
   const [categories, setCategories] = useState<CommonOptions>([])
   const [datasource, setDatasource] = useState<CommonResponseList<Report>>(defaultResponseList)
+  const [dataSummary, setDataSummary] = useState<Summary>({
+    income: 0,
+    expense: 0,
+    amount: 0,
+  })
   const [pagination, setPagination] = useQueryStates(
     {
       page: parseAsString.withDefault('1'),
@@ -36,12 +41,30 @@ export const useReportPage = () => {
 
   const { setLoading } = useBlockLoading()
 
+  const fetchSummary = async () => {
+    setLoading(true)
+    const params = {
+      ...pagination,
+      ...createParams(query),
+    }
+    const result = await runEffectSafe(getSummary(params))
+
+    if (!result.success) {
+      setLoading(false)
+      return message.error('Failed to fetch summary')
+    }
+
+    setDataSummary(result.data.data)
+    setLoading(false)
+  }
+
   const fetchReports = async () => {
     setLoading(true)
     const params = {
       ...pagination,
       ...createParams(query),
     }
+
     const result = await runEffectSafe(getReports(params))
 
     if (!result.success) {
@@ -76,6 +99,10 @@ export const useReportPage = () => {
     fetchReports()
   }, [pagination, query])
 
+  useEffect(() => {
+    fetchSummary()
+  }, [query.start_date, query.end_date, query.date])
+
   const onChangePagination = (page: number, pageSize: number) => {
     setPagination({
       page: page.toString(),
@@ -85,6 +112,7 @@ export const useReportPage = () => {
 
   return {
     datasource,
+    dataSummary,
     form,
     onReset,
     onSubmit,
