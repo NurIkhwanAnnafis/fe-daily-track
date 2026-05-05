@@ -20,6 +20,7 @@ export const useReportPage = () => {
     income: 0,
     expense: 0,
     amount: 0,
+    balance: 0,
   })
   const [pagination, setPagination] = useQueryStates(
     {

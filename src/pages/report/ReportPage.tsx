@@ -41,6 +41,7 @@ const ReportPage = () => {
       </Filter.Root>
 
       <CardTotal
+        balance={dataSummary.balance}
         amount={dataSummary.amount}
         expense={dataSummary.expense}
         income={dataSummary.income}

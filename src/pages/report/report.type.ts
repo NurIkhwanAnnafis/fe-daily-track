@@ -30,6 +30,7 @@ export type Summary = {
   income: number
   expense: number
   amount: number
+  balance: number
 }
 
 export type ReportsFilter = {
