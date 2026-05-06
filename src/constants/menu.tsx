@@ -4,6 +4,7 @@ import {
   GroupOutlined,
   FallOutlined,
   RiseOutlined,
+  DatabaseOutlined,
 } from "@ant-design/icons"
 import type { MenuProps } from "antd"
 import type { UseNavigateResult } from "@tanstack/react-router"
@@ -18,7 +19,7 @@ export const createMenu = (navigate: UseNavigateResult<string>): MenuProps['item
   },
   {
     key: '/report',
-    icon: createElement(FallOutlined),
+    icon: createElement(DatabaseOutlined),
     title: 'Report Management',
     onClick: () => navigate({ to: '/report' }),
     label: 'Report'
