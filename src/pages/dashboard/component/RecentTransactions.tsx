@@ -10,6 +10,7 @@ import { TRANSACTION_TYPE } from "../../../constants/transaction"
 
 type Props = {
   data: Report[]
+  date: string
 }
 
 const columns: ColumnsType<Report> = [
@@ -51,14 +52,14 @@ const columns: ColumnsType<Report> = [
   },
 ]
 
-const RecentTransactions: React.FC<Props> = ({ data }) => {
+const RecentTransactions: React.FC<Props> = ({ data, date }) => {
   const navigate = useNavigate()
 
   return (
     <Card
       variant="outlined"
-      className="!rounded-xl"
-      title={<Typography.Text strong>Recent Transactions</Typography.Text>}
+      className="rounded-xl!"
+      title={<Typography.Text strong>Recent Transactions - {date}</Typography.Text>}
       extra={
         <Button
           type="link"

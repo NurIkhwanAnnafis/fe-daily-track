@@ -2,7 +2,6 @@ import { Card, Empty, Typography } from "antd"
 import {
   PieChart,
   Pie,
-  Cell,
   Tooltip,
   Legend,
   ResponsiveContainer,
@@ -13,6 +12,8 @@ import type { CategoryBreakdown } from "../dashboard.type"
 import { numberFormatter } from "../../../utils/number"
 
 type Props = {
+  title: string
+  description: string
   data: CategoryBreakdown[]
 }
 
@@ -21,18 +22,18 @@ const COLORS = [
   '#0891b2', '#7c3aed', '#db2777', '#059669',
 ]
 
-const CategoryPieChart: React.FC<Props> = ({ data }) => {
+const CategoryPieChart: React.FC<Props> = ({ data, title, description }) => {
   return (
     <Card
       variant="outlined"
       className="rounded-xl!"
       title={
-        <Typography.Text strong>Expense by Category</Typography.Text>
+        <Typography.Text strong>{title}</Typography.Text>
       }
     >
       {data.length === 0 ? (
         <div className="flex items-center justify-center h-[260px]">
-          <Empty description="No expense data for this month" />
+          <Empty description={description} />
         </div>
       ) : (
         <ResponsiveContainer width="100%" height={260}>
@@ -40,12 +41,12 @@ const CategoryPieChart: React.FC<Props> = ({ data }) => {
             <Pie
               data={data}
               dataKey="total"
-              nameKey="category"
+              nameKey="name"
               cx="50%"
               cy="50%"
               outerRadius={90}
               innerRadius={50}
-              paddingAngle={3}
+              paddingAngle={5}
               label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
               labelLine={false}
               shape={(props) => <Sector {...props} fill={COLORS[props.index % COLORS.length]} />}

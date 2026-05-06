@@ -14,7 +14,8 @@ const DashboardPage: React.FC = () => {
     summary,
     recentTransactions,
     monthlyTrend,
-    categoryBreakdown,
+    expenseCategoryBreakdown,
+    incomeCategoryBreakdown,
   } = useDashboardPage()
 
   return (
@@ -40,18 +41,24 @@ const DashboardPage: React.FC = () => {
         amount={summary.amount}
       />
 
+      <TrendChart data={monthlyTrend} />
+
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
-        <div className="lg:col-span-3">
-          <TrendChart data={monthlyTrend} />
-        </div>
-        <div className="lg:col-span-2">
-          <CategoryPieChart data={categoryBreakdown} />
-        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <CategoryPieChart
+          title="Expense by Category"
+          description="No expense data for this month"
+          data={expenseCategoryBreakdown}
+        />
+        <CategoryPieChart
+          title="Income by Category"
+          description="No income data for this month"
+          data={incomeCategoryBreakdown}
+        />
       </div>
 
       {/* Recent Transactions */}
-      <RecentTransactions data={recentTransactions.data} />
+      <RecentTransactions data={recentTransactions.data} date={selectedMonth.format('MMMM YYYY')} />
     </div>
   )
 }
