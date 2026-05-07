@@ -27,11 +27,11 @@ export const createColumns = ({ handleEdit, handleDelete }: Props): ColumnsType<
     title: "Description",
     dataIndex: "description",
     key: "description",
-    render: (_, record) => (
+    render: (_, record) => record.description ? (
       <Tooltip title={record.description}>
         {bigString(record.description)}
       </Tooltip>
-    ),
+    ) : '-',
     responsive: ['md'],
     width: 400,
   },
