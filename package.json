@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server/index.ts",
+    "dev": "tsx src/index.ts",
     "build": "vite build && vite build --ssr entry-server.tsx",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -13,7 +13,6 @@
     "@effect/platform": "^0.94.4",
     "@effect/platform-node": "^0.104.1",
     "@effect/schema": "^0.75.5",
-    "@supabase/supabase-js": "^2.95.3",
     "@tanstack/react-router": "^1.157.16",
     "@tanstack/react-router-devtools": "^1.159.5",
     "cors": "^2.8.6",

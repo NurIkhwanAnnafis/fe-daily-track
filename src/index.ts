@@ -16,10 +16,6 @@ async function startServer() {
     // This handles HMR, serving index.html, and transforming files
     app.use(vite.middlewares)
 
-    // API routes will go here in the future
-    // Example:
-    // app.use('/api', apiRouter)
-
     app.listen(port, () => {
       console.log(`🚀 Server running at http://localhost:${port}`)
     })
