@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useProfile } from '../../hooks/useProfile'
 import {
   UserOutlined,
@@ -8,9 +8,13 @@ import {
 import { Avatar, Tag } from 'antd'
 import CardDetail from './component/CardDetail'
 import { useProfilePage } from './hooks/useProfilePage'
+import FormAccountDetails, { type FormAccountDetailsRef } from './component/FormAccountDetails'
+import FormUserConfig, { type FormUserConfigRef } from './component/FormUserConfig'
 
 const ProfilePage: React.FC = () => {
-  const { profile, currentData } = useProfile({
+  const refFormAccountDetail = useRef<FormAccountDetailsRef>(null)
+  const refFormUserConfig = useRef<FormUserConfigRef>(null)
+  const { profile, currentData, fetchProfile } = useProfile({
     enabled: true,
     showError: true,
     fetchUserConfig: true,
@@ -21,12 +25,25 @@ const ProfilePage: React.FC = () => {
     dataFinancialLimit,
     dataOrganization,
     dataActivity,
-  } = useProfilePage({ profile, userConfig: currentData?.user_config })
+  } = useProfilePage({
+    profile,
+    userConfig: currentData?.user_config
+  })
 
   return (
     <div className="min-h-screen pb-10">
       {/* Banner */}
       <div className="h-12 sm:h-20 md:h-28 w-full relative" />
+
+      <FormUserConfig
+        ref={refFormUserConfig}
+        onSuccess={() => fetchProfile()}
+      />
+
+      <FormAccountDetails
+        ref={refFormAccountDetail}
+        onSuccess={() => fetchProfile()}
+      />
 
       {/* Avatar + Name */}
       <div className="px-4 sm:px-6">
@@ -75,6 +92,7 @@ const ProfilePage: React.FC = () => {
             iconTitle={dataAccountsDetail.iconTitle}
             title="Account Details"
             data={dataAccountsDetail.data}
+            onEdit={() => refFormAccountDetail.current?.handleUpdate(profile)}
           />
 
           {/* Financial Limit */}
@@ -82,6 +100,7 @@ const ProfilePage: React.FC = () => {
             iconTitle={dataFinancialLimit.iconTitle}
             title="Financial Limit"
             data={dataFinancialLimit.data}
+            onEdit={() => refFormUserConfig.current?.handleUpdate(currentData?.user_config)}
           />
 
           {/* Organization */}

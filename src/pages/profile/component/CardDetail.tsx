@@ -1,6 +1,8 @@
 import type { ReactNode } from "react"
-import { Card } from "antd"
+import { Button, Card } from "antd"
+import { EditOutlined } from "@ant-design/icons"
 import InfoRow from "./InfoRow"
+import { cx } from "../../../utils/cx"
 
 type Props = {
   title: string
@@ -10,21 +12,34 @@ type Props = {
     value: ReactNode
     icon?: ReactNode
   }>
+  onEdit?: () => void
 }
 
 const CardDetail: React.FC<Props> = (props) => {
   const {
     title,
     iconTitle,
-    data
+    data,
+    onEdit,
   } = props
 
   return (
     <Card
       title={(
-        <div className='flex items-center gap-3'>
-          {iconTitle}
-          <span>{title}</span>
+        <div
+          className={cx("flex items-center", {
+            "justify-between": !!onEdit,
+          })}
+        >
+          <div className="flex items-center gap-3">
+            {iconTitle}
+            <span>{title}</span>
+          </div>
+          {onEdit && (
+            <Button onClick={onEdit} type="text">
+              <EditOutlined />
+            </Button>
+          )}
         </div>
       )}
     >
