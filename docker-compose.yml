@@ -1,0 +1,10 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fe-daily-track:latest
+    container_name: fe-daily-track
+    ports:
+      - "3000:80"
+    restart: unless-stopped

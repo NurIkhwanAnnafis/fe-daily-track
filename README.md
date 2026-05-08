@@ -29,15 +29,7 @@ A personal finance management web application for tracking daily income, expense
 | [Zustand](https://zustand-demo.pmnd.rs/) | Global state management |
 | [nuqs](https://nuqs.47ng.com/) | Type-safe URL search params |
 | [dayjs](https://day.js.org/) | Date formatting and manipulation |
-| [react-icons](https://react-icons.github.io/react-icons/) | Icon set |
-
-### Backend / Server
-| Technology | Purpose |
-|---|---|
-| [Express 5](https://expressjs.com/) | SSR & API server |
-| [Supabase JS](https://supabase.com/docs/reference/javascript) | Authentication & database client |
-| [Effect](https://effect.website/) | Typed functional programming & error handling |
-| [@effect/platform-node](https://effect.website/) | Node.js platform bindings for Effect |
+| [Effect](https://effect.website/) | Typed functional programming, Network Handling & error handling |
 
 ### Build & Tooling
 | Technology | Purpose |
@@ -136,4 +128,10 @@ my-daily/
 ├── entry-server.tsx    # SSR render entry point
 ├── vite.config.ts      # Vite configuration
 └── package.json
+```
+
+## Docker
+
+```bash
+docker-compose up -d --build
 ```

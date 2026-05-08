@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/index.ts",
-    "build": "vite build && vite build --ssr entry-server.tsx",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },

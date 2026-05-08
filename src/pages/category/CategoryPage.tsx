@@ -29,7 +29,7 @@ const CategoryPage = () => {
     {
       key: '1',
       label: (
-        <a onClick={(e) => refFormCategory.current?.fetchDetail(item.id)}>
+        <a onClick={() => refFormCategory.current?.fetchDetail(item.id)}>
           Edit
         </a>
       ),
