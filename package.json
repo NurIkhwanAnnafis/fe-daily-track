@@ -12,6 +12,8 @@
   "dependencies": {
     "@effect/platform": "^0.94.4",
     "@effect/schema": "^0.75.5",
+    "@google/genai": "^2.4.0",
+    "@tanstack/react-query": "^5.100.10",
     "@tanstack/react-router": "^1.157.16",
     "@tanstack/react-router-devtools": "^1.159.5",
     "autoprefixer": "^10.5.0",

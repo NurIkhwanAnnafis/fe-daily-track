@@ -4,6 +4,7 @@ import type { CommonOptions } from "../../../types/common"
 import { forwardRef, useImperativeHandle } from "react"
 import type { ExpenseFieldType } from "../expense.type"
 import { useFormExpense } from "../hooks/useFormExpense"
+import { AI_EXPENSE_PROMPT } from "../expense.md"
 
 type Props = {
   onSuccess: () => void | Promise<unknown>
@@ -45,6 +46,8 @@ const FormExpense = forwardRef<FormExpenseRef, Props>((props, ref) => {
       onCancel={handleCloseModal}
       onSubmit={onSubmit}
       name="form-expense"
+      generateByAi
+      prompt={AI_EXPENSE_PROMPT}
     >
       <Form.Item<ExpenseFieldType>
         label="Merchant Name"
