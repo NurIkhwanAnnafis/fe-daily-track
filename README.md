@@ -7,6 +7,7 @@ A personal finance management web application for tracking daily income, expense
 ## ✨ Features
 
 - 📊 **Dashboard** — High-level overview of your financial health
+- 🤖 **AI Receipt Parsing** — Automatically extract expense details from receipt images using Gemini AI
 - 💸 **Expense Tracking** — Log and categorize your daily expenses
 - 💰 **Income Tracking** — Record income sources and amounts
 - 🏷️ **Category Management** — Organize transactions with custom categories
@@ -27,6 +28,7 @@ A personal finance management web application for tracking daily income, expense
 | [Ant Design](https://ant.design/) | UI component library |
 | [Recharts](https://recharts.org/) | Data visualization / charts |
 | [Zustand](https://zustand-demo.pmnd.rs/) | Global state management |
+| [Google Gen AI SDK](https://github.com/google/genai-js) | AI integration for receipt parsing |
 | [nuqs](https://nuqs.47ng.com/) | Type-safe URL search params |
 | [dayjs](https://day.js.org/) | Date formatting and manipulation |
 | [Effect](https://effect.website/) | Typed functional programming, Network Handling & error handling |
@@ -79,6 +81,7 @@ Copy `.env.example` to `.env` and provide the appropriate values for your enviro
 NODE_ENV=development
 VITE_BASE_URL=your_api_url
 PORT=your_port
+VITE_GEMINI_API_KEY=your_gemini_api_key_here
 ```
 
 | Variable | Description |
@@ -86,6 +89,7 @@ PORT=your_port
 | `NODE_ENV` | Runtime environment (`development` / `production`) |
 | `VITE_BASE_URL` | Base URL for API requests |
 | `PORT` | Port the Express server listens on |
+| `VITE_GEMINI_API_KEY` | **SECRET**: Google Gemini API key for AI receipt parsing. Do NOT commit this! |
 
 ---
 

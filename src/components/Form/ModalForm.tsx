@@ -102,7 +102,7 @@ function ModalForm<T>(props: Props<T>) {
             className="grid flex-col gap-3! mb-5! p-4! bg-slate-50/50! dark:bg-zinc-800/10! rounded-lg! items-start!"
           >
             <Upload {...uploadProps} className="block!">
-              <Button className="w-full!" htmlType="button" icon={<UploadOutlined />}>Select File</Button>
+              <Button className="w-full!" htmlType="button" icon={<UploadOutlined />}>Select Your Receipt</Button>
             </Upload>
             <Button
               type="primary"
