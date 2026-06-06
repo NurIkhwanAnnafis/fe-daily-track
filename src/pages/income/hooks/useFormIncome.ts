@@ -34,10 +34,10 @@ export const useFormIncome = ({ onSuccess }: Props) => {
     setLoading(false)
 
     if (!result.success) {
-      return message.error('Failed to save expense')
+      return message.error('Failed to save income')
     }
 
-    message.success('Expense saved successfully')
+    message.success('Income saved successfully')
     handleCloseModal()
     onSuccess()
   }
