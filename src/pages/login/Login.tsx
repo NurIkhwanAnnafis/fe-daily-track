@@ -1,31 +1,30 @@
 import React from "react"
-import { Button, Checkbox, Form, Input } from "antd"
-import { WalletOutlined } from "@ant-design/icons"
+import { Button, Checkbox, Form, Input, Typography, theme } from "antd"
 import type { FieldType } from "./login.type"
 import { useLogin } from "./hooks/useLogin"
 
 
 const Login: React.FC = () => {
   const { handleLogin, loading } = useLogin()
+  const {
+    token: { colorBgContainer, colorBorderSecondary, colorPrimary },
+  } = theme.useToken()
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="xl:w-1/4 lg:mx-0 mx-3 rounded-xl overflow-hidden shadow-lg">
-        {/* Green top bar */}
-        <div className="h-3 bg-[#62d163]" />
-        {/* White content */}
-        <div className="p-10 flex flex-col justify-around items-center bg-white gap-8">
-          <div className="flex gap-3 text-[#62d163]">
-            <WalletOutlined className="text-2xl" />
-            <h5 className="text-[20px] font-bold text-neutral-950">My Daily</h5>
-          </div>
+    <div className="w-full h-full flex items-center justify-center px-3">
+      <div
+        className="xl:w-[380px] w-full rounded-2xl overflow-hidden"
+        style={{ background: colorBgContainer, border: `1px solid ${colorBorderSecondary}` }}
+      >
+        <div className="pt-10 px-10 pb-8 flex flex-col items-center gap-8">
+          <img src="/favicon.svg" alt="My Daily" className="w-14 h-14" />
           <div className="flex flex-col gap-2 text-center">
-            <h6 className="text-2xl font-bold text-neutral-950">Sign In</h6>
-            <p className="text-neutral-500">Welcome back to your financial dashboard</p>
+            <Typography.Title level={4} className="m-0!">Welcome back</Typography.Title>
+            <Typography.Text type="secondary">Sign in to your My Daily dashboard</Typography.Text>
           </div>
           <Form
             name="basic"
@@ -40,20 +39,20 @@ const Login: React.FC = () => {
               label="Email"
               name="email"
               rules={[{ required: true, message: 'Please input your email!', type: 'email' }]}
-              className="w-full mb-4! text-neutral-950"
+              className="w-full mb-4!"
               required={false}
             >
-              <Input />
+              <Input size="large" placeholder="you@example.com" />
             </Form.Item>
 
             <Form.Item<FieldType>
               label="Password"
               name="password"
               rules={[{ required: true, message: 'Please input your password!' }]}
-              className="w-full mb-4! text-neutral-950"
+              className="w-full mb-4!"
               required={false}
             >
-              <Input.Password />
+              <Input.Password size="large" placeholder="••••••••" />
             </Form.Item>
 
             <div className="flex justify-between items-center mb-4!">
@@ -61,18 +60,20 @@ const Login: React.FC = () => {
                 <Checkbox>Remember me</Checkbox>
               </Form.Item>
               <a href="#">
-                <p className="text-[#62d163]">Forgot Password?</p>
+                <Typography.Text style={{ color: colorPrimary }}>Forgot Password?</Typography.Text>
               </a>
             </div>
 
-            <Form.Item label={null}>
-              <Button type="primary" htmlType="submit" className="w-full" loading={loading}>
+            <Form.Item label={null} className="mb-0!">
+              <Button type="primary" htmlType="submit" size="large" className="w-full" loading={loading}>
                 Log In
               </Button>
             </Form.Item>
           </Form>
 
-          <p className="text-center text-neutral-950">Don't have an account? <a href="#"><span className="text-[#62d163]">Sign up</span></a></p>
+          <Typography.Text className="text-center">
+            Don't have an account? <a href="#"><Typography.Text style={{ color: colorPrimary }}>Sign up</Typography.Text></a>
+          </Typography.Text>
         </div>
       </div>
     </div>

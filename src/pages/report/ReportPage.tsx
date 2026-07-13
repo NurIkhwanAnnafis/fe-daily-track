@@ -1,3 +1,4 @@
+import { theme } from "antd"
 import DataTable from "../../components/DataTable/DataTable"
 import { ExpandedRowRender } from "../../components/DataTable/ExpandedRowRender"
 import { Filter } from "../../components/Filter/Filter"
@@ -8,6 +9,9 @@ import { column } from "./report.constant"
 import type { Report, ReportsFilter } from "./report.type"
 
 const ReportPage = () => {
+  const {
+    token: { colorBorderSecondary },
+  } = theme.useToken()
   const {
     datasource,
     dataSummary,
@@ -32,7 +36,7 @@ const ReportPage = () => {
           <div className="flex justify-end gap-2 items-end h-full">
             <div className="flex gap-4">
               <Filter.Reset onReset={onReset} />
-              <span className="h-auto w-px bg-neutral-300" />
+              <span className="h-auto w-px" style={{ background: colorBorderSecondary }} />
               <Filter.Submit />
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Card, Empty, Typography } from "antd"
+import { Card, Empty, Typography, theme } from "antd"
 import {
   PieChart,
   Pie,
@@ -10,6 +10,8 @@ import {
 import type React from "react"
 import type { CategoryBreakdown } from "../dashboard.type"
 import { numberFormatter } from "../../../utils/number"
+import { CATEGORICAL_PALETTE } from "../../../constants/chartColors"
+import { useThemeMode } from "../../../store/useThemeMode.store"
 
 type Props = {
   title: string
@@ -17,12 +19,13 @@ type Props = {
   data: CategoryBreakdown[]
 }
 
-const COLORS = [
-  '#6366f1', '#16a34a', '#dc2626', '#d97706',
-  '#0891b2', '#7c3aed', '#db2777', '#059669',
-]
-
 const CategoryPieChart: React.FC<Props> = ({ data, title, description }) => {
+  const { mode } = useThemeMode()
+  const colors = CATEGORICAL_PALETTE[mode]
+  const {
+    token: { colorBorderSecondary, colorBgElevated, colorText },
+  } = theme.useToken()
+
   return (
     <Card
       variant="outlined"
@@ -49,10 +52,11 @@ const CategoryPieChart: React.FC<Props> = ({ data, title, description }) => {
               paddingAngle={5}
               label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
               labelLine={false}
-              shape={(props) => <Sector {...props} fill={COLORS[props.index % COLORS.length]} />}
+              shape={(props) => <Sector {...props} fill={colors[props.index % colors.length]} />}
             />
             <Tooltip
               formatter={(value) => typeof value === 'number' ? numberFormatter(value, 'id') : String(value)}
+              contentStyle={{ background: colorBgElevated, border: `1px solid ${colorBorderSecondary}`, borderRadius: 8, color: colorText }}
             />
             <Legend />
           </PieChart>

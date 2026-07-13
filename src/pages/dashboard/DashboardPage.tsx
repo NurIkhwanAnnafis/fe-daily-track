@@ -1,4 +1,5 @@
 import type React from "react"
+import { Typography } from "antd"
 import { useDashboardPage } from "./hooks/useDashboardPage"
 import MonthNavigator from "./component/MonthNavigator"
 import SummaryCards from "./component/SummaryCards"
@@ -23,8 +24,8 @@ const DashboardPage: React.FC = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-800 m-0">Dashboard</h1>
-          <p className="text-sm text-gray-500 m-0">Your financial overview</p>
+          <Typography.Title level={4} className="m-0!">Dashboard</Typography.Title>
+          <Typography.Text type="secondary" className="text-sm">Your financial overview</Typography.Text>
         </div>
         <MonthNavigator
           selectedMonth={selectedMonth}

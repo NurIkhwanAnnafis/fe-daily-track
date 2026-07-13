@@ -1,3 +1,4 @@
+import { theme } from "antd"
 import DataTable from "../../components/DataTable/DataTable"
 import { ExpandedRowRender } from "../../components/DataTable/ExpandedRowRender"
 import { Filter } from "../../components/Filter/Filter"
@@ -7,6 +8,9 @@ import type { Expense, ExpenseFilter } from "./expense.type"
 import { useExpensePage } from "./hooks/useExpensePage"
 
 const ExpensePage = () => {
+  const {
+    token: { colorBorderSecondary },
+  } = theme.useToken()
   const {
     datasource,
     column,
@@ -41,7 +45,7 @@ const ExpensePage = () => {
           <div className="flex justify-end gap-2 items-end h-full">
             <div className="flex gap-4">
               <Filter.Reset onReset={onReset} />
-              <span className="h-auto w-px bg-neutral-300" />
+              <span className="h-auto w-px" style={{ background: colorBorderSecondary }} />
               <Filter.Submit />
             </div>
           </div>

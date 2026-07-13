@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react"
-import { Button, Card, Drawer, Form, type FormInstance } from "antd"
+import { Button, Card, Drawer, Form, theme, type FormInstance } from "antd"
 import { FilterFilled, ReloadOutlined } from "@ant-design/icons"
 import { LayoutContext } from "../../provider/layout.context"
 
@@ -70,6 +70,9 @@ const FilterRoot = <T,>({ children, onSubmit, form }: FilterRootProps<T>) => {
     isMobile
   } = useContext(LayoutContext)
   const [open, setOpen] = useState(false)
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken()
 
   return (
     <FilterContext.Provider
@@ -77,7 +80,7 @@ const FilterRoot = <T,>({ children, onSubmit, form }: FilterRootProps<T>) => {
     >
       <div className="relative">
         {!isMobile ? (
-          <Card className="border-2! p-5 bg-white space-y-4">
+          <Card className="p-5! space-y-4" style={{ background: colorBgContainer }}>
             <Form
               form={form}
               onFinish={onSubmit}
@@ -114,7 +117,8 @@ const FilterRoot = <T,>({ children, onSubmit, form }: FilterRootProps<T>) => {
           type="primary"
           icon={<FilterFilled />}
           variant="text"
-          className="min-w-12! min-h-12! ring-4! ring-white"
+          className="min-w-12! min-h-12! shadow-lg!"
+          style={{ boxShadow: `0 0 0 4px ${colorBgContainer}, 0 4px 12px rgba(0,0,0,0.25)` }}
           onClick={() => setOpen(true)}
         />
       </div>

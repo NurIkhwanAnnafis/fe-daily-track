@@ -19,7 +19,7 @@ const CardTotal: React.FC<CardTotalProps> = ({ income, expense, amount, balance 
         variant="outlined"
       >
         <Typography.Text type={balance === 0 ? undefined : balance < 0 ? 'danger' : 'success'}>
-          <span className="text-xl font-medium">
+          <span className="text-xl font-medium font-tabular">
             {numberFormatter(balance, 'id')}
           </span>
         </Typography.Text>
@@ -37,7 +37,7 @@ const CardTotal: React.FC<CardTotalProps> = ({ income, expense, amount, balance 
         variant="outlined"
       >
         <Typography.Text type="success">
-          <span className="text-xl font-medium">
+          <span className="text-xl font-medium font-tabular">
             +{numberFormatter(income, 'id')}
           </span>
         </Typography.Text>
@@ -55,7 +55,7 @@ const CardTotal: React.FC<CardTotalProps> = ({ income, expense, amount, balance 
         variant="outlined"
       >
         <Typography.Text type="danger">
-          <span className="text-xl font-medium">
+          <span className="text-xl font-medium font-tabular">
             -{numberFormatter(expense, 'id')}
           </span>
         </Typography.Text>
@@ -73,7 +73,7 @@ const CardTotal: React.FC<CardTotalProps> = ({ income, expense, amount, balance 
         variant="outlined"
       >
         <Typography.Text type={amount === 0 ? undefined : amount < 0 ? 'danger' : 'success'}>
-          <span className="text-xl font-medium">
+          <span className="text-xl font-medium font-tabular">
             {numberFormatter(amount, 'id')}
           </span>
         </Typography.Text>

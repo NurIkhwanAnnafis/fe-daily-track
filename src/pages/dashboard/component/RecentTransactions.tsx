@@ -31,7 +31,7 @@ const columns: ColumnsType<Report> = [
     dataIndex: 'type',
     key: 'type',
     render: (_, record) => (
-      <Tag color={record.type?.id === TRANSACTION_TYPE.INCOME ? 'green' : 'red'}>
+      <Tag color={record.type?.id === TRANSACTION_TYPE.INCOME ? 'success' : 'error'}>
         {record.type?.name}
       </Tag>
     ),
@@ -44,6 +44,7 @@ const columns: ColumnsType<Report> = [
     render: (_, record) => (
       <Typography.Text
         type={record.type?.id === TRANSACTION_TYPE.INCOME ? 'success' : 'danger'}
+        className="font-tabular"
       >
         {record.type?.id === TRANSACTION_TYPE.INCOME ? '+' : '-'}
         {numberFormatter(record.amount, 'id')}

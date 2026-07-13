@@ -50,7 +50,7 @@ const FormCategory = forwardRef<FormCategoryRef, Props>((props, ref) => {
         label="Category Name"
         name="name"
         rules={[{ required: true, message: 'Please input category name!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Input placeholder="Input category name" />
@@ -60,7 +60,7 @@ const FormCategory = forwardRef<FormCategoryRef, Props>((props, ref) => {
         label="Category Type"
         name="type_ids"
         rules={[{ required: true, message: 'Please select category type!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Select options={categoryTypes} placeholder="Select category type" allowClear mode="multiple" />

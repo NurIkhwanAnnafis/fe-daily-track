@@ -1,4 +1,4 @@
-import { Card, Typography } from "antd"
+import { Card, Typography, theme } from "antd"
 import {
   BarChart,
   Bar,
@@ -24,6 +24,10 @@ const formatYAxis = (value: number) => {
 }
 
 const TrendChart: React.FC<Props> = ({ data }) => {
+  const {
+    token: { colorSuccess, colorError, colorBorderSecondary, colorTextTertiary, colorBgElevated, colorText },
+  } = theme.useToken()
+
   return (
     <Card
       variant="outlined"
@@ -34,15 +38,16 @@ const TrendChart: React.FC<Props> = ({ data }) => {
     >
       <ResponsiveContainer width="100%" height={260}>
         <BarChart data={data} margin={{ top: 8, right: 8, left: 0, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-          <XAxis dataKey="month" tick={{ fontSize: 12 }} />
-          <YAxis tickFormatter={formatYAxis} tick={{ fontSize: 12 }} width={50} />
+          <CartesianGrid strokeDasharray="3 3" stroke={colorBorderSecondary} />
+          <XAxis dataKey="month" tick={{ fontSize: 12, fill: colorTextTertiary }} />
+          <YAxis tickFormatter={formatYAxis} tick={{ fontSize: 12, fill: colorTextTertiary }} width={50} />
           <Tooltip
             formatter={(value) => typeof value === 'number' ? numberFormatter(value, 'id') : String(value)}
+            contentStyle={{ background: colorBgElevated, border: `1px solid ${colorBorderSecondary}`, borderRadius: 8, color: colorText }}
           />
           <Legend />
-          <Bar dataKey="income" name="Income" fill="#16a34a" radius={[4, 4, 0, 0]} />
-          <Bar dataKey="expense" name="Expense" fill="#dc2626" radius={[4, 4, 0, 0]} />
+          <Bar dataKey="income" name="Income" fill={colorSuccess} radius={[4, 4, 0, 0]} />
+          <Bar dataKey="expense" name="Expense" fill={colorError} radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </Card>

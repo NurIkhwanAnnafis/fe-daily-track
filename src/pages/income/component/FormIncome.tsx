@@ -50,7 +50,7 @@ const FormIncome = forwardRef<FormIncomeRef, Props>((props, ref) => {
         label="Merchant Name"
         name="merchant_name"
         rules={[{ required: true, message: 'Please input merchant name!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Input placeholder="Input merchant name" className="w-full" />
@@ -60,7 +60,7 @@ const FormIncome = forwardRef<FormIncomeRef, Props>((props, ref) => {
         label="Amount"
         name="amount"
         rules={[{ required: true, message: 'Please input amount!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <InputNumber placeholder="Input amount" styles={{ root: { width: '100%' } }} />
@@ -70,7 +70,7 @@ const FormIncome = forwardRef<FormIncomeRef, Props>((props, ref) => {
         label="Date"
         name="date"
         rules={[{ required: true, message: 'Please input date!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <DatePicker showTime placeholder="Input Date" className="w-full" />
@@ -80,7 +80,7 @@ const FormIncome = forwardRef<FormIncomeRef, Props>((props, ref) => {
         label="Category"
         name="category_id"
         rules={[{ required: true, message: 'Please select category!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Select options={categories} placeholder="Select category" allowClear className="w-full" />
@@ -89,7 +89,7 @@ const FormIncome = forwardRef<FormIncomeRef, Props>((props, ref) => {
       <Form.Item<IncomeFieldType>
         label="Description"
         name="description"
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
       >
         <Input.TextArea rows={4} placeholder="Input description" />
       </Form.Item>

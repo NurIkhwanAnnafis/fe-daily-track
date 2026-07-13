@@ -1,4 +1,4 @@
 export const colorMap = {
-  "income": "green",
-  "expense": "red",
+  "income": "success",
+  "expense": "error",
 }

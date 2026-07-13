@@ -8,14 +8,16 @@ import { useMemo, useState } from 'react';
 import { useScreen } from '../../../utils/screen';
 import { useProfile } from '../../../hooks/useProfile';
 import { useBlockLoading } from '../../../store/useBlockLoading.store';
+import { useThemeMode } from '../../../store/useThemeMode.store';
 import { runEffectSafe } from '../../../lib/runtime';
 import { postLogout } from '../../../pages/login/login.service';
 import { removeUserLocalStorage } from '../../../utils/localstorage';
 
 export const useMainLayout = () => {
   const {
-    token: { colorBgContainer },
+    token: { colorBgContainer, colorBgLayout, colorBorderSecondary },
   } = theme.useToken();
+  const { mode, toggle: toggleThemeMode } = useThemeMode()
   const screen = useScreen()
   const { currentData, profile } = useProfile({ enabled: true })
   const { setLoading } = useBlockLoading()
@@ -71,6 +73,10 @@ export const useMainLayout = () => {
 
   return {
     colorBgContainer,
+    colorBgLayout,
+    colorBorderSecondary,
+    mode,
+    toggleThemeMode,
     screen,
     profile,
     selectedKeys,

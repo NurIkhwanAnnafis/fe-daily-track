@@ -23,7 +23,7 @@ export const column: ColumnsType<Report> = [
     dataIndex: "type",
     key: "type",
     render: (_, record) => (
-      <Tag color={record.type?.id === TRANSACTION_TYPE.INCOME ? 'green' : 'red'}>
+      <Tag color={record.type?.id === TRANSACTION_TYPE.INCOME ? 'success' : 'error'}>
         {capitalizeFirstLetter(record.type?.name)}
       </Tag>
     ),
@@ -53,9 +53,8 @@ export const column: ColumnsType<Report> = [
     key: "amount",
     render: (_, record) => (
       <Typography.Text
-        style={{
-          color: record.type?.id === TRANSACTION_TYPE.INCOME ? 'green' : 'red',
-        }}
+        type={record.type?.id === TRANSACTION_TYPE.INCOME ? 'success' : 'danger'}
+        className="font-tabular"
       >
         {record.type?.id === TRANSACTION_TYPE.INCOME ? '+' : '-'}{numberFormatter(record.amount, 'id')}
       </Typography.Text>

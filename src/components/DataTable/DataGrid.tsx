@@ -1,4 +1,4 @@
-import { Pagination, Card } from "antd"
+import { Pagination, Card, theme } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import { cx } from "../../utils/cx"
 import { useContext } from "react"
@@ -32,6 +32,9 @@ const DataGrid = <T,>(props: DataGridProps<T>) => {
   } = props
 
   const { isMobile, isTablet, isDesktop } = useContext(LayoutContext)
+  const {
+    token: { colorBorder, colorTextSecondary, colorTextTertiary },
+  } = theme.useToken()
 
   return (
     <div className="w-full h-full flex flex-col justify-between gap-3">
@@ -50,14 +53,18 @@ const DataGrid = <T,>(props: DataGridProps<T>) => {
             </div>
           ))}
           <Card
-            className={cx("cursor-pointer w-full flex items-center justify-center  bg-transparent! border-dashed! border-2! border-neutral-300!", componentClassName)}
+            className={cx("cursor-pointer w-full flex items-center justify-center bg-transparent!", componentClassName)}
+            style={{ borderStyle: 'dashed', borderWidth: 2, borderColor: colorBorder }}
             onClick={onCreate}
           >
             <div className="flex flex-col gap-2 items-center justify-center ">
-              <div className="h-12 w-12 flex items-center justify-center border-2 border-neutral-300 border-dashed rounded-full">
-                <PlusOutlined className="text-neutral-500!" />
+              <div
+                className="h-12 w-12 flex items-center justify-center rounded-full"
+                style={{ borderStyle: 'dashed', borderWidth: 2, borderColor: colorBorder, color: colorTextSecondary }}
+              >
+                <PlusOutlined />
               </div>
-              <p className="font-semibold text-neutral-400">
+              <p className="font-semibold m-0" style={{ color: colorTextTertiary }}>
                 {createText}
               </p>
             </div>

@@ -1,24 +1,27 @@
 import type React from "react"
-import { Spin } from "antd"
+import { Spin, Typography, theme } from "antd"
 import { LoadingOutlined } from "@ant-design/icons"
 
 const Loading: React.FC = () => {
+  const {
+    token: { colorBgContainer, colorBorderSecondary, colorPrimary },
+  } = theme.useToken()
+
   return (
-    <div
-      className="bg-neutral-900/80 fixed left-0 top-0 z-1050 h-full w-full text-neutral-900"
-    >
+    <div className="bg-black/60 fixed left-0 top-0 z-1050 h-full w-full">
       <div
-        className="bg-white my-[5%] mx-auto w-64 px-2 py-5 text-center rounded"
+        className="my-[5%] mx-auto w-64 px-2 py-6 text-center rounded-xl"
+        style={{ background: colorBgContainer, border: `1px solid ${colorBorderSecondary}` }}
       >
-        <div className="flex justify-center mb-4 text-primary-500">
+        <div className="flex justify-center mb-4" style={{ color: colorPrimary }}>
           <Spin indicator={<LoadingOutlined spin className="text-5xl!" />} />
         </div>
-        <p className="text-xl font-medium text-neutral-700 mb-2">
+        <Typography.Text strong className="text-lg! block mb-1!">
           Loading
-        </p>
-        <p className="text-base font-normal text-neutral-500">
+        </Typography.Text>
+        <Typography.Text type="secondary">
           Please wait...
-        </p>
+        </Typography.Text>
       </div>
     </div>
 

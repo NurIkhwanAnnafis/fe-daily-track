@@ -45,7 +45,7 @@ const FormAccountDetails = forwardRef<FormAccountDetailsRef, Props>((props, ref)
         label="First Name"
         name="first_name"
         rules={[{ required: true, message: 'Please input first name!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Input placeholder="Input first name" className="w-full" />
@@ -55,7 +55,7 @@ const FormAccountDetails = forwardRef<FormAccountDetailsRef, Props>((props, ref)
         label="Last Name"
         name="last_name"
         rules={[{ required: true, message: 'Please input last name!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Input placeholder="Input last name" className="w-full" />
@@ -65,7 +65,7 @@ const FormAccountDetails = forwardRef<FormAccountDetailsRef, Props>((props, ref)
         label="Email"
         name="email"
         rules={[{ required: true, message: 'Please input email!', type: 'email' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Input placeholder="Input email" className="w-full" />
@@ -75,7 +75,7 @@ const FormAccountDetails = forwardRef<FormAccountDetailsRef, Props>((props, ref)
         label="Password"
         name="password"
         rules={[{ required: true, message: 'Please input password!' }]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
         hasFeedback
       >
@@ -101,7 +101,7 @@ const FormAccountDetails = forwardRef<FormAccountDetailsRef, Props>((props, ref)
             },
           }),
         ]}
-        className="w-full mb-4! text-neutral-950"
+        className="w-full mb-4!"
         required
       >
         <Input.Password placeholder="Input confirm password" className="w-full" />

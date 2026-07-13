@@ -99,7 +99,7 @@ function ModalForm<T>(props: Props<T>) {
       >
         {!!generateByAi && (
           <div
-            className="grid flex-col gap-3! mb-5! p-4! bg-slate-50/50! dark:bg-zinc-800/10! rounded-lg! items-start!"
+            className="grid flex-col gap-3! mb-5! p-4! bg-slate-50! dark:bg-white/5! rounded-lg! items-start! border! border-slate-200! dark:border-white/10!"
           >
             <Upload {...uploadProps} className="block!">
               <Button className="w-full!" htmlType="button" icon={<UploadOutlined />}>Select Your Receipt</Button>

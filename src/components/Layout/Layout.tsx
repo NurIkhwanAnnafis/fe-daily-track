@@ -1,11 +1,12 @@
 import { Outlet, useLocation } from "@tanstack/react-router"
 import { ConfigProvider } from 'antd';
 import MainLayout from "./MainLayout"
-import { useMemo } from "react"
-import { tokenTheme } from "../../constants/theme";
+import { useEffect, useMemo } from "react"
+import { getAppTheme } from "../../constants/theme";
 import AuthLayout from "./AuthLayout";
 import Loading from "../Loading/Loading";
 import { useBlockLoading } from "../../store/useBlockLoading.store";
+import { useThemeMode } from "../../store/useThemeMode.store";
 
 const authRoutes = [
   "/login", "/login/",
@@ -17,14 +18,21 @@ const authRoutes = [
 const Layout = () => {
   const location = useLocation()
   const { loading } = useBlockLoading()
+  const { mode } = useThemeMode()
   const isAuthPages = useMemo(() => {
     return authRoutes.includes(location.pathname)
   }, [location])
 
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', mode === 'dark')
+  }, [mode])
+
+  const appTheme = useMemo(() => getAppTheme(mode), [mode])
+
   if (isAuthPages) {
     return (
       <div className="w-screen h-screen">
-        <ConfigProvider theme={tokenTheme}>
+        <ConfigProvider theme={appTheme}>
           <AuthLayout>
             <Outlet />
           </AuthLayout>
@@ -35,7 +43,7 @@ const Layout = () => {
 
   return (
     <div className="w-screen h-screen overflow-x-auto">
-      <ConfigProvider theme={tokenTheme}>
+      <ConfigProvider theme={appTheme}>
         {loading && <Loading />}
         <MainLayout>
           <Outlet />

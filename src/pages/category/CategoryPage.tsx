@@ -1,5 +1,5 @@
 import dayjs from "dayjs"
-import { Card, Dropdown, Tag } from "antd"
+import { Card, Dropdown, Tag, Typography, theme } from "antd"
 import { FileImageOutlined, MoreOutlined } from "@ant-design/icons"
 import DataGrid from "../../components/DataTable/DataGrid"
 import { Filter } from "../../components/Filter/Filter"
@@ -11,6 +11,9 @@ import { colorMap } from "./category.constant"
 import PopupConfirm from "../../components/Popup/PopupConfirm"
 
 const CategoryPage = () => {
+  const {
+    token: { colorBorderSecondary, colorTextTertiary },
+  } = theme.useToken()
   const {
     refFormCategory,
     datasource,
@@ -72,7 +75,7 @@ const CategoryPage = () => {
           <div className="flex justify-end gap-2 items-end h-full">
             <div className="flex gap-4">
               <Filter.Reset onReset={onReset} />
-              <span className="h-auto w-px bg-neutral-300" />
+              <span className="h-auto w-px" style={{ background: colorBorderSecondary }} />
               <Filter.Submit />
             </div>
           </div>
@@ -97,9 +100,9 @@ const CategoryPage = () => {
               </Dropdown>
             </div>
             <div className="flex flex-col gap-2">
-              <p className="font-semibold text-neutral-950 mb-0!">
+              <Typography.Text strong className="mb-0!">
                 {item.name}
-              </p>
+              </Typography.Text>
               <div className="flex gap-2">
                 {item.category_types.map((type) => (
                   <Tag key={type} color={colorMap[type as keyof typeof colorMap]}>{type}</Tag>
@@ -107,7 +110,7 @@ const CategoryPage = () => {
               </div>
             </div>
             <div>
-              <p className="font-semibold text-neutral-400">
+              <p className="font-semibold m-0!" style={{ color: colorTextTertiary }}>
                 {dayjs(item.created_at).format('DD MMM YYYY')}
               </p>
             </div>

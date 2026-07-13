@@ -1,4 +1,4 @@
-import { Button } from "antd"
+import { Button, Typography } from "antd"
 import { PlusOutlined } from "@ant-design/icons"
 import type { ReactNode } from "react"
 
@@ -15,7 +15,7 @@ const PageContainer: React.FC<Props> = (props) => {
   return (
     <div className="w-full h-full flex flex-col gap-3">
       <div className="flex max-sm:flex-col max-sm:items-start max-sm:gap-2 justify-between items-center">
-        <h2 className="text-lg text-[#64748B]">{description}</h2>
+        <Typography.Text type="secondary" className="text-lg!">{description}</Typography.Text>
         <div className="sm:float-right">
           {onCreate && (
             <Button
